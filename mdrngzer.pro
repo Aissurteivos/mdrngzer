@@ -21,4 +21,5 @@ FORMS    += layout/mainwindow.ui
 
 DISTFILES += \
     doc/rom.md \
-    doc/floorLayouts.md
+    doc/floorLayouts.md \
+    README.md
