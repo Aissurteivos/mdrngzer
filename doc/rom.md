@@ -1,5 +1,7 @@
 #Rom Layout Information
 
+All memory in this rom is in Little-endain format
+
 ###Floor information
 Each floor in this game has a 32 byte entry in a list that starts at 0x003DC7B0 and ends at 0x003EB1D0 in the ROM.
 The values that we have figured out are as shown in the table:
@@ -40,7 +42,7 @@ The values that we have figured out are as shown in the table:
 
 ###Pokemon spawns
 
-Pokemon spawn according to an indexed list in the ROM.  
+Pokemon spawn according to an indexed list in the spanning from 0x003EB1D0 to 0x00406E78 ROM.  
 Each entry in the list is terminated by 8 bytes of zeros.  
 
 Each pokemon that spawns on a floor has a 8 byte entry.
@@ -54,4 +56,6 @@ Each pokemon that spawns on a floor has a 8 byte entry.
 |06-07|Pokemon ID|
 
 Two pokemon IDs have their probablity set to bytes set to 0, and appear in every entry.
-Those are Kecleon, and "decoy", being 0x017F and 0x0292 respectively.
+Those are Kecleon, and "decoy" being 0x017F, 0x0292 respectively.
+
+Another pokemon that seems to have its probability set to 0 is castform and its forms, which are 0x017B-0x017E.
