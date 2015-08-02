@@ -1,6 +1,6 @@
 #Rom Layout Information
 
-####Floor information (0x003DC7B0-0x003EB200 in ROM)
+####Floor information (0x003DC7B0 - 0x003EB200 in ROM)
 |Offset|Value|
 |------|:----|
 |00|[Floor structure](floorLayouts.md)|
