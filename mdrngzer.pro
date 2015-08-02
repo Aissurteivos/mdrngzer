@@ -20,4 +20,5 @@ HEADERS  += src/mainwindow.h
 FORMS    += layout/mainwindow.ui
 
 DISTFILES += \
-    doc/rom.md
+    doc/rom.md \
+    doc/floorLayouts.md
