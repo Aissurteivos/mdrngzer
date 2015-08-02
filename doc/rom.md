@@ -2,9 +2,26 @@
 
 All memory in this rom is in Little-endain format
 
-###Floor information
-Each floor in this game has a 32 byte entry in a list that starts at 0x003DC7B0 and ends at 0x003EB1D0 in the ROM.
-The values that we have figured out are as shown in the table:
+###Floor index
+
+Each floor in this game has its own 18-byte list that points to other locations in the rom.
+These go from 0x003D3A2A to 0x003DC628 in ROM.
+
+|Offset|Value|
+|------|:----|
+|00-01|Unknown|
+|02-03|Unknown|
+|04-05|Unknown|
+|06-07|Unknown|
+|08-09|Unknown|
+|0A-0B|Floor terrain Index|
+|0C-0D|Pokemon spawn Index|
+|0E-0F|Trap spawn Index?|
+|10-11|Item spawn Index|
+
+###Floor terrain data
+Each floor in this game has 32 byte terrain data entry in a list that starts at 0x003DC7B0 and ends at 0x003EB1D0 in the ROM.
+The values are as shown in the table:
 
 |Offset|Value|
 |------|:----|
@@ -43,9 +60,9 @@ The values that we have figured out are as shown in the table:
 ###Pokemon spawns
 
 Pokemon spawn according to an indexed list in the spanning from 0x003EB1D0 to 0x00406E78 ROM.  
-Each entry in the list is terminated by 8 bytes of zeros.  
-
-Each pokemon that spawns on a floor has a 8 byte entry.
+Each entry in the list is terminated by 8 bytes of zeros, due to being variable legnth.  
+Each entry has multiple pokemon in a sub-list.
+Each pokemon that spawns in this sub-list has a 8 byte entry.
 
 |Offset|Value|
 |------|:----|
