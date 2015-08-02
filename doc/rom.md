@@ -1,8 +1,8 @@
-#Floor information (0x003DC7B0-0x003EB200 in ROM)
+#Rom Layout Information
 
 Each entry is a single byte except as specified otherwise.
 
-
+####Floor information (0x003DC7B0-0x003EB200 in ROM)
 |Offset|Value|
 |------|:----|
 |00|[Floor structure](floorLayouts.md)|
