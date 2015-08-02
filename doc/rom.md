@@ -1,7 +1,7 @@
 #Rom Layout Information
 
 ###Floor information
-Each floor in this game has a 32 byte entry in a list that starts at 0x003DC7B0 and ends at 0x003EB1D0 in the ROM
+Each floor in this game has a 32 byte entry in a list that starts at 0x003DC7B0 and ends at 0x003EB1D0 in the ROM.
 The values that we have figured out are as shown in the table:
 
 |Offset|Value|
@@ -34,17 +34,16 @@ The values that we have figured out are as shown in the table:
 |19|Unknown|
 |1A|Unknown|
 |1B|Flag?|
-|1C|Enemy IQ, least sig byte|
-|1D|Enemy IQ, most sig byte|
+|1C-1D|Enemy IQ|
 |1E|Padding|
 |1F|Padding|
 
 ###Pokemon spawns
 
-Pokemon spawn according to an indexed list in the ROM  
-Each entry in the list is terminated by 8 bytes of zeros  
+Pokemon spawn according to an indexed list in the ROM.  
+Each entry in the list is terminated by 8 bytes of zeros.  
 
-Each pokemon that spawns on a floor has a 8 byte entry
+Each pokemon that spawns on a floor has a 8 byte entry.
 
 |Offset|Value|
 |------|:----|
@@ -53,3 +52,6 @@ Each pokemon that spawns on a floor has a 8 byte entry
 |02-03|Probability of appearing?|
 |04-05|Probability of appearing?|
 |06-07|Pokemon ID|
+
+Two pokemon IDs have their probablity set to bytes set to 0, and appear in every entry.
+Those are Kecleon, and "decoy", being 0x017F and 0x0292 respectively.
