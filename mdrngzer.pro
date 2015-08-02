@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,11 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += src/main.cpp \
-    src/mainwindow.cpp
+    src/dialog.cpp
 
-HEADERS  += src/mainwindow.h
+HEADERS  += \
+    src/dialog.h
 
-FORMS    += layout/mainwindow.ui
+FORMS    += \
+    layout/dialog.ui
 
 DISTFILES += \
     doc/rom.md \
