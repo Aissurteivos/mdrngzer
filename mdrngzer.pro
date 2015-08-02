@@ -18,3 +18,6 @@ SOURCES += src/main.cpp \
 HEADERS  += src/mainwindow.h
 
 FORMS    += layout/mainwindow.ui
+
+DISTFILES += \
+    doc/rom.md
