@@ -1,4 +1,4 @@
-Floor information (0x003DC7B0-0x003EB200 in ROM)
+﻿Floor information (0x003DC7B0-0x003EB200 in ROM)
 
 32 bytes
 
