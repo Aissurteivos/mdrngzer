@@ -2,7 +2,7 @@
 
 Each entry is a single byte except as specified otherwise.
 
-Bytes (32 in total):
+Bytes (32 in total):  
     00: [Floor structure](floorLayouts.md)  
     01:  
     02: Terrain Appearance  
