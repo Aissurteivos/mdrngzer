@@ -2,38 +2,38 @@ Floor information (0x003DC7B0-0x003EB200 in ROM)
 
 32 bytes
 
-Byte 01: Floor structure (see floor types)  
-Byte 02:  
-Byte 03: Terrain Appearance  
-Byte 04: Music index  
-Byte 05: Weather  
-Byte 06:  
-Byte 07: Initial Pokemon density  
-Byte 08: Kecleon Shop Percentage  
-Byte 09: Monster House Percentage  
-Byte 10: Flag?  
-Byte 11:  
-Byte 12: Flag?  
-Byte 13: Rooms with water index  
+Byte 00: Floor structure (see floor types)  
+Byte 01:  
+Byte 02: Terrain Appearance  
+Byte 03: Music index  
+Byte 04: Weather  
+Byte 05:  
+Byte 06: Initial Pokemon density  
+Byte 07: Kecleon Shop Percentage  
+Byte 08: Monster House Percentage  
+Byte 09: Flag?  
+Byte 10:  
+Byte 11: Flag?  
+Byte 12: Rooms with water index  
+Byte 13: Flag?  
 Byte 14: Flag?  
-Byte 15: Flag?  
-Byte 16: Item density  
-Byte 17: Trap density  
-Byte 18: Floor counter  
-Byte 19: Event index  
-Byte 20:  
-Byte 21: Buried Item density  
-Byte 22: Water density  
-Byte 23: Darkness  
-Byte 24: Coin Max, steps of 40  
+Byte 15: Item density  
+Byte 16: Trap density  
+Byte 17: Floor counter  
+Byte 18: Event index  
+Byte 19:  
+Byte 20: Buried Item density  
+Byte 21: Water density  
+Byte 22: Darkness  
+Byte 23: Coin Max, steps of 40  
+Byte 24:  
 Byte 25:  
 Byte 26:  
-Byte 27:  
-Byte 28: Flag?  
-Byte 29: Enemy IQ, least sig byte  
-Byte 30: Enemy IQ, most sig byte  
+Byte 27: Flag?  
+Byte 28: Enemy IQ, least sig byte  
+Byte 29: Enemy IQ, most sig byte  
+Byte 30: Padding  
 Byte 31: Padding  
-Byte 32: Padding  
 
 Floor Types 
 
