@@ -14,7 +14,7 @@ These are all possible floor layout types.
 |07|Cross (5 Rooms in form of Cross; 3 x 3 with Top Left, Top Right, Bottom Left, and Bottom Right Room missing)|
 |08|Small-Medium (Biggest 4 x 2)|
 |09|"Beetle" (1 Giant Room in middle of map with 3 vertical rooms to the left of it and to the right of it)|
-|0A|Outer Rooms (All Rooms at edge of map; Biggest|6 x 4 with no rooms in the middle)|
+|0A|Outer Rooms (All Rooms at edge of map; Biggest 6 x 4 with no rooms in the middle)|
 |0B|Small-Medium (Biggest 3 x 3)|
 |0C|Medium-Large (Biggest 6 x 4)|
 |0D|Medium-Large (Biggest 6 x 4)|
