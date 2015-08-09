@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <iostream>
 
 namespace Ui {
     class Dialog;
@@ -19,6 +20,7 @@ public slots:
     
 private:
     Ui::Dialog *ui;
+    std::string filename;
 };
 
 #endif // DIALOG_H

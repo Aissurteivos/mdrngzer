@@ -1,6 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 #include <QFileDialog>
+#include "rom.h"
 
 Dialog::Dialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
     ui->setupUi(this);
@@ -13,5 +14,9 @@ Dialog::~Dialog() {
 }
 
 void Dialog::chooseFile() {
-    ui->filenameTextEdit->setPlainText(QFileDialog::getOpenFileName(this, "Choose a ROM", "", "Image Files (*.nds)"));
+    QString temp = QFileDialog::getOpenFileName(this, "Choose a ROM", "", "Image Files (*.nds)");
+    filename = temp.toUtf8().constData();
+    std::cout << "blah " << filename << std::endl;
+    ui->filenameTextEdit->setPlainText(temp);
+
 }

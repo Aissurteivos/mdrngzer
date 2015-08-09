@@ -2,10 +2,11 @@
 #define ROM_H
 #include <iostream>
 #include <fstream>
+#include <QString>
 
 class ROM {
 private:
-    fstream rom;
+    std::fstream rom;
 public:
     ROM(std::string filepath);
     void randomizePokemon();
