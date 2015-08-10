@@ -59,7 +59,7 @@ The values are as shown in the table:
 
 ###Pokemon spawns 0x003EB1D0 to 0x00406E78
 
-Pokemon spawn according to an indexed list in the ROM.
+Pokemon spawn according to an indexed list in the ROM.  
 Each entry in the list is terminated by 8 bytes of zeros, due to being variable legnth.  
 Each entry has multiple pokemon in a sub-list.
 Each pokemon that spawns in this sub-list has a 8 byte entry.
