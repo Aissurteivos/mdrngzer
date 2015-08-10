@@ -1,6 +1,7 @@
 #Rom Layout Information
 
 All memory in this rom is in Little-endain format
+##mappa_s.bin 0x003D3A00 - 0x00415D20
 
 ###Floor index
 
@@ -76,3 +77,11 @@ Two pokemon IDs have their probablity set to bytes set to 0, and appear in every
 Those are Kecleon, and "decoy" being 0x017F, 0x0292 respectively.
 
 Another pokemon that seems to have its probability set to 0 is castform and its forms, which are 0x017B-0x017E.
+
+###Credits
+
+90% of the information in this doc has been gathered from these sources:  
+http://projectpokemon.org/wiki/Pok%C3%A9mon_Mystery_Dungeon_Explorers  
+http://www.gamefaqs.com/boards/955859-pokemon-mystery-dungeon-explorers-of-sky/51698562
+http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686
+http://apointlessplace.net/wms/

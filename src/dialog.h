@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <iostream>
+#include <QDebug>
 
 namespace Ui {
     class Dialog;
@@ -17,7 +18,10 @@ public:
     
 public slots:
     void chooseFile();
-    
+    void randomize();
+
+private slots:
+
 private:
     Ui::Dialog *ui;
     std::string filename;
