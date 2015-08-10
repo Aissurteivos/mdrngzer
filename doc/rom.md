@@ -84,3 +84,4 @@ http://projectpokemon.org/wiki/Pok%C3%A9mon_Mystery_Dungeon_Explorers
 http://www.gamefaqs.com/boards/955859-pokemon-mystery-dungeon-explorers-of-sky/51698562
 http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686
 http://apointlessplace.net/wms/
+http://apointlessplace.net/wms/data/ - A bunch of helpful lists
