@@ -13,6 +13,34 @@ const uint16_t excludedPokemon[] = {
     0x0092, //Moltres
     0x0096, //Mewtwo
     0x0097, //Mew
+    0x00C9, //Unown A
+    0x00CA, //Unown B
+    0x00CB, //Unown C
+    0x00CC, //Unown D
+    0x00CD, //Unown E
+    0x00CE, //Unown F
+    0x00CF, //Unown G
+    0x00D0, //Unown H
+    0x00D1, //Unown I
+    0x00D2, //Unown J
+    0x00D3, //Unown K
+    0x00D4, //Unown L
+    0x00D5, //Unown M
+    0x00D6, //Unown N
+    0x00D7, //Unown O
+    0x00D8, //Unown P
+    0x00D9, //Unown Q
+    0x00DA, //Unown R
+    0x00DB, //Unown S
+    0x00DC, //Unown T
+    0x00DD, //Unown U
+    0x00DE, //Unown V
+    0x00DF, //Unown W
+    0x00E0, //Unown X
+    0x00E1, //Unown Y
+    0x00E2, //Unown Z
+    0x00E3, //Unown !
+    0x00E4, //Unown ?
     0x010E, //Raikou
     0x010F, //Entei
     0x0110, //Suicune
@@ -55,6 +83,7 @@ const uint16_t excludedPokemon[] = {
     0x0214, //Manaphy
     0x0215, //Darkrai
     0x0216, //Shaymin
+    0x0229  //Decoy
 };
 
 ROM::ROM(unsigned seed) : rand(seed) {
