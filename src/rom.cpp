@@ -2,14 +2,13 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
+#include <algorithm>
 
-const uint8_t choosablePokemon[][2] = {
-    {0x10, 0x00},
-};
+const uint16_t maxPokemonId = 0x217;
 
-const uint8_t unreplacablePokemon[][2] = {
-    {0x29, 0x02},
-    {0x00, 0x00},
+const uint16_t excludedPokemon[] = {
+    0x0000, //No pokemon/end of list
+    0x017F, //Kecleon
 };
 
 ROM::ROM(unsigned seed) : rand(seed) {
@@ -33,13 +32,18 @@ void ROM::save(const std::string &filePath) {
 }
 
 void ROM::randPokemon() {
+    std::vector<uint16_t> choosables;
+    for (uint16_t i = 0; i != maxPokemonId; i++) {
+        if (std::find(std::begin(excludedPokemon), std::end(excludedPokemon), i) == std::end(excludedPokemon))
+            choosables.push_back(i);
+    }
     for (unsigned i = 0; i != 14229; i++) {
         uint8_t *entry = memory.data() + 0x003EB1D0 + i * 8;
         //Check for every unchoosable pokemon type
         bool finish = false;
-        for (auto unreplace : unreplacablePokemon) {
+        for (uint16_t excludable : excludedPokemon) {
             //If it matches
-            if (!std::memcmp(entry + 6, unreplace, 2)) {
+            if (!std::memcmp(entry + 6, &excludable, 2)) {
                 //Dont randomize this pokemon
                 finish = true;
                 break;
@@ -50,9 +54,9 @@ void ROM::randPokemon() {
             continue;
         
         //Choose the pokemon to use
-        unsigned choice = rand() % (sizeof(choosablePokemon) / sizeof(choosablePokemon[0]));
+        unsigned choice = rand() % choosables.size();
         
-        memcpy(entry + 6, choosablePokemon[choice], 2);
+        memcpy(entry + 6, &choosables[choice], 2);
     }
 }
 
