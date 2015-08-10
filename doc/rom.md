@@ -1,6 +1,6 @@
 #Rom Layout Information
 
-All memory in this rom is in Little-endain format
+All memory in this rom is in Little-endian format
 ##mappa_s.bin 0x003D3A00 - 0x00415D20
 
 ###Floor index

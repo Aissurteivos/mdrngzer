@@ -3,14 +3,19 @@
 #include <memory>
 #include <cstdint>
 #include <vector>
+#include <random>
 
 class ROM {
 public:
+    ROM(unsigned seed);
     void open(const std::string &filePath);
     void save(const std::string &filePath);
     
+    void randPokemon();
+    
 private:
     std::vector<uint8_t> memory;
+    std::mt19937 rand;
 };
 
 #endif // ROM_H

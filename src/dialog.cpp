@@ -22,8 +22,11 @@ void Dialog::chooseFile() {
 
 void Dialog::randomize() {
     try {
-        ROM rom;
+        ROM rom(0);
         rom.open(ui->filenameTextEdit->toPlainText().toUtf8().constData());
+        rom.randPokemon();
+        rom.save(QFileDialog::getSaveFileName(this, "Choose a Destination", "", "Image FIles (*.nds)")
+                 .toUtf8().constData());
         if (ui->PokemonSpawnEnable->isChecked()) {
         }
     } catch (const std::string &error) {
