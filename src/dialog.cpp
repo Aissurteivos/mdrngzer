@@ -24,5 +24,4 @@ void Dialog::chooseFile() {
 void Dialog::randomize() {
     ROM nds(filename);
     if (ui->PokemonSpawnEnable->isChecked()) {nds.randomizePokemon();}
-
 }
