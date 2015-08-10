@@ -3,10 +3,9 @@
 All memory in this rom is in Little-endian format
 ##mappa_s.bin 0x003D3A00 - 0x00415D20
 
-###Floor index
+###Floor index 0x003D3A2A - 0x003DC628
 
 Each floor in this game has its own 18-byte list that points to other locations in the rom.
-These go from 0x003D3A2A to 0x003DC628 in ROM.
 
 |Offset|Value|
 |------|:----|
@@ -20,8 +19,8 @@ These go from 0x003D3A2A to 0x003DC628 in ROM.
 |0E-0F|Trap spawn Index?|
 |10-11|Item spawn Index|
 
-###Floor terrain data
-Each floor in this game has 32 byte terrain data entry in a list that starts at 0x003DC7B0 and ends at 0x003EB1D0 in the ROM.
+###Floor terrain data 0x003DC7B0 - 0x003EB1D0
+Each floor in this game has 32 byte terrain data entry in a list.
 The values are as shown in the table:
 
 |Offset|Value|
@@ -58,9 +57,9 @@ The values are as shown in the table:
 |1E|Padding|
 |1F|Padding|
 
-###Pokemon spawns
+###Pokemon spawns 0x003EB1D0 to 0x00406E78
 
-Pokemon spawn according to an indexed list in the spanning from 0x003EB1D0 to 0x00406E78 ROM.  
+Pokemon spawn according to an indexed list in the ROM.  
 Each entry in the list is terminated by 8 bytes of zeros, due to being variable legnth.  
 Each entry has multiple pokemon in a sub-list.
 Each pokemon that spawns in this sub-list has a 8 byte entry.
