@@ -17,14 +17,13 @@ Dialog::~Dialog() {
 
 void Dialog::chooseFile() {
     QString temp = QFileDialog::getOpenFileName(this, "Choose a ROM", "", "Image Files (*.nds)");
-    filename = temp.toUtf8().constData();
-    qDebug() << "Filepath: " << filename.c_str();
     ui->filenameTextEdit->setPlainText(temp);
 }
 
 void Dialog::randomize() {
     try {
-        ROM nds(filename);
+        ROM rom;
+        rom.open(ui->filenameTextEdit->toPlainText().toUtf8().constData());
         if (ui->PokemonSpawnEnable->isChecked()) {
         }
     } catch (const std::string &error) {

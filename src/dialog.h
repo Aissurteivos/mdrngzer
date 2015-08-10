@@ -24,7 +24,6 @@ private slots:
 
 private:
     Ui::Dialog *ui;
-    std::string filename;
 };
 
 #endif // DIALOG_H

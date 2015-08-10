@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iostream>
 
-ROM::ROM(const std::string &filePath) {
+void ROM::open(const std::string &filePath) {
     std::ifstream file(filePath);
     file.seekg(0, std::ios::end);
     memory.resize(file.tellg());

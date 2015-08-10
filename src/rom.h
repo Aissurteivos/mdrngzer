@@ -6,7 +6,7 @@
 
 class ROM {
 public:
-    ROM(const std::string &filePath);
+    void open(const std::string &filePath);
     void save(const std::string &filePath);
     
 private:
