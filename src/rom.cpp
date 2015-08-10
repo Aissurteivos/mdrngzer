@@ -15,7 +15,7 @@ ROM::ROM(unsigned seed) : rand(seed) {
 }
 
 void ROM::open(const std::string &filePath) {
-    std::ifstream file(filePath);
+    std::ifstream file(filePath, std::ios::binary);
     file.seekg(0, std::ios::end);
     memory.resize(file.tellg());
     file.seekg(0, std::ios::beg);
@@ -27,7 +27,7 @@ void ROM::open(const std::string &filePath) {
 }
 
 void ROM::save(const std::string &filePath) {
-    std::ofstream file(filePath);
+    std::ofstream file(filePath, std::ios::binary);
     file.write((char*)memory.data(), memory.size());
 }
 
