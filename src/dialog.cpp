@@ -18,5 +18,4 @@ void Dialog::chooseFile() {
     filename = temp.toUtf8().constData();
     std::cout << "blah " << filename << std::endl;
     ui->filenameTextEdit->setPlainText(temp);
-
 }
