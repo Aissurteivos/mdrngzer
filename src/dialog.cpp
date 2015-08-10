@@ -1,6 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 #include <QFileDialog>
+#include <QMessageBox>
 #include "rom.h"
 
 Dialog::Dialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
@@ -22,7 +23,11 @@ void Dialog::chooseFile() {
 }
 
 void Dialog::randomize() {
-    ROM nds(filename);
-    if (ui->PokemonSpawnEnable->isChecked()) {
+    try {
+        ROM nds(filename);
+        if (ui->PokemonSpawnEnable->isChecked()) {
+        }
+    } catch (const std::string &error) {
+        QMessageBox::information(this, "Error", tr(error.c_str()));
     }
 }
