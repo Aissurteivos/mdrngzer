@@ -1,15 +1,16 @@
 #ifndef ROM_H
 #define ROM_H
-#include <iostream>
-#include <fstream>
-#include <QString>
+#include <memory>
+#include <cstdint>
+#include <vector>
 
 class ROM {
-private:
-    std::fstream rom;
 public:
-    ROM(std::string filepath);
-    void randomizePokemon();
+    ROM(const std::string &filePath);
+    void save(const std::string &filePath);
+    
+private:
+    std::vector<uint8_t> memory;
 };
 
 #endif // ROM_H

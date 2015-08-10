@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = mdrngzer
 TEMPLATE = app
-
+CONFIG += c++11
 
 SOURCES += src/main.cpp \
     src/dialog.cpp \
