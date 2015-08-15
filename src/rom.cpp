@@ -86,6 +86,13 @@ const uint16_t excludedPokemon[] = {
     0x0229  //Decoy
 };
 
+const uint8_t maxAbilityId = 0x7C;
+
+const uint8_t excludedAbilities[] = {
+  0x35, // Wonder Guard, possibly gamebreaking
+  0x74  // unknown ability, named "$$$"
+};
+
 ROM::ROM(unsigned seed) : rand(seed) {
 }
 
@@ -135,3 +142,33 @@ void ROM::randPokemon() {
     }
 }
 
+void ROM::randAbilities() {
+    std::vector<uint8_t> choosables;
+    std::vector<std::pair<unsigned,unsigned>> randAbilityIndex;
+    //Make choosable abilitities list
+    for (uint8_t i = 0; i != maxAbilityId; i++) {
+        if (std::find(std::begin(excludedAbilities), std::end(excludedAbilities), i) == std::end(excludedAbilities))
+            choosables.push_back(i);
+    }
+    //Map abilities to pokemon ID
+    for (unsigned i = 0; i != 600; i++) {
+        std::pair<unsigned,unsigned> a;
+        a.first = rand() % choosables.size();
+        a.second = 0;
+        //75% chance for second ability
+        if ((rand() % 100) < 75) {
+            a.second = rand() % choosables.size();
+        }
+        randAbilityIndex.push_back(a);
+    }
+    //Assign the values to the pokemon entries
+    for (unsigned i = 0; i != 1155; i++) {
+        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+
+        //Get pokemon ID from memory
+        uint16_t ID = *(entry+4)+*(entry+5)*256;
+
+        memcpy(entry + 24, &choosables[randAbilityIndex[ID].first], 1);
+        memcpy(entry + 25, &choosables[randAbilityIndex[ID].second], 1);
+    }
+}

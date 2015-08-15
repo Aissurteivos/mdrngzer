@@ -12,6 +12,7 @@ public:
     void save(const std::string &filePath);
     
     void randPokemon();
+    void randAbilities();
     
 private:
     std::vector<uint8_t> memory;
@@ -19,3 +20,4 @@ private:
 };
 
 #endif // ROM_H
+
