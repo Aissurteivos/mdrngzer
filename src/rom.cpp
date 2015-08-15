@@ -155,8 +155,8 @@ void ROM::randAbilities() {
         std::pair<unsigned,unsigned> a;
         a.first = rand() % choosables.size();
         a.second = 0;
-        //75% chance for second ability
-        if ((rand() % 100) < 75) {
+        //55% chance for second ability
+        if ((rand() % 100) < 55) {
             a.second = rand() % choosables.size();
         }
         randAbilityIndex.push_back(a);
