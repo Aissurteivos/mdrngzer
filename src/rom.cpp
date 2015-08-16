@@ -108,10 +108,11 @@ void ROM::randPokemon() {
     };
     
     std::vector<uint16_t> choosables;
-    for (uint16_t i = 0; i != maxPokemonId; i++) {
+    
+    for (uint16_t i = 0; i != maxPokemonId; i++)
         if (std::find(std::begin(excludedPokemon), std::end(excludedPokemon), i) == std::end(excludedPokemon))
             choosables.push_back(i);
-    }
+    
     for (unsigned i = 0; i != 14229; i++) {
         uint8_t *entry = memory.data() + 0x003EB1D0 + i * 8;
         //Check for every unchoosable pokemon type
@@ -162,6 +163,7 @@ void ROM::randAbilities() {
         pokemonAbilities.emplace_back();
         PokemonAbility &a = pokemonAbilities.back();
         a.first = choosables[rand() % choosables.size()];
+        
         //55% chance for second ability
         if ((rand() % 100) < 55)
             a.second = choosables[rand() % choosables.size()];
@@ -189,24 +191,31 @@ void ROM::randTypes() {
         0x12  //Neutral type, not used for pokemon
     };
     
+    struct PokemonType {
+        uint8_t first, second;
+    };
+    
     std::vector<uint8_t> choosables;
-    std::vector<std::pair<unsigned,unsigned>> randTypeIndex;
+    std::vector<PokemonType> pokemonTypes;
+    
     //Make choosable Types list
-    for (uint8_t i = 0; i != maxTypeId; i++) {
+    for (uint8_t i = 0; i != maxTypeId; i++)
         if (std::find(std::begin(excludedTypes), std::end(excludedTypes), i) == std::end(excludedTypes))
             choosables.push_back(i);
-    }
-    //Map types to pokemon ID
+    
+    //Map types to every pokemon ID
     for (unsigned i = 0; i != 600; i++) {
-        std::pair<unsigned,unsigned> a;
-        a.first = rand() % choosables.size();
-        a.second = 0;
+        pokemonTypes.emplace_back();
+        PokemonType &t = pokemonTypes.back();
+        t.first = rand() % choosables.size();
+        
         //40% chance for second Type
-        if ((rand() % 100) < 40) {
-            a.second = rand() % choosables.size();
-        }
-        randTypeIndex.push_back(a);
+        if ((rand() % 100) < 40)
+            t.second = rand() % choosables.size();
+        else
+            t.second = 0;
     }
+    
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
         uint8_t *entry = memory.data() + 0x00472808 + i * 68;
@@ -214,8 +223,8 @@ void ROM::randTypes() {
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
 
-        memcpy(entry + 0x14, &choosables[randTypeIndex[ID].first], 1);
-        memcpy(entry + 0x15, &choosables[randTypeIndex[ID].second], 1);
+        memcpy(entry + 0x14, &pokemonTypes[ID].first, 1);
+        memcpy(entry + 0x15, &pokemonTypes[ID].second, 1);
     }
 }
 
@@ -232,16 +241,17 @@ void ROM::randIQs() {
     };
     
     std::vector<uint8_t> choosables;
-    std::vector<unsigned> randIQIndex;
+    std::vector<uint8_t> pokemonIQs;
+    
     //Make choosable IQ's list
-    for (uint8_t i = 0; i != maxIQId; i++) {
+    for (uint8_t i = 0; i != maxIQId; i++)
         if (std::find(std::begin(excludedIQs), std::end(excludedIQs), i) == std::end(excludedIQs))
             choosables.push_back(i);
-    }
-    //Map IQ's to pokemon ID
-    for (unsigned i = 0; i != 600; i++) {
-        randIQIndex.push_back(rand() % choosables.size());
-    }
+    
+    //Map IQ's to every pokemon ID
+    for (unsigned i = 0; i != 600; i++)
+        pokemonIQs.push_back(choosables[rand() % choosables.size()]);
+    
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
         uint8_t *entry = memory.data() + 0x00472808 + i * 68;
@@ -249,6 +259,6 @@ void ROM::randIQs() {
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
 
-        memcpy(entry + 0x17, &choosables[randIQIndex[ID]], 1);
+        memcpy(entry + 0x17, &pokemonIQs[ID], 1);
     }
 }
