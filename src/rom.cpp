@@ -89,8 +89,16 @@ const uint16_t excludedPokemon[] = {
 const uint8_t maxAbilityId = 0x7C;
 
 const uint8_t excludedAbilities[] = {
-  0x35, // Wonder Guard, possibly gamebreaking
-  0x74  // unknown ability, named "$$$"
+    0x00, // No ability
+    0x35, // Wonder Guard, possibly gamebreaking
+    0x74  // unknown ability, named "$$$"
+};
+
+const uint8_t maxTypeId = 0x12;
+
+const uint8_t excludedTypes[] = {
+    0x00, // No type, so excluded
+    0x12  // Neutral type, not used for pokemon
 };
 
 ROM::ROM(unsigned seed) : rand(seed) {
@@ -170,5 +178,36 @@ void ROM::randAbilities() {
 
         memcpy(entry + 24, &choosables[randAbilityIndex[ID].first], 1);
         memcpy(entry + 25, &choosables[randAbilityIndex[ID].second], 1);
+    }
+}
+
+void ROM::randTypes() {
+    std::vector<uint8_t> choosables;
+    std::vector<std::pair<unsigned,unsigned>> randTypeIndex;
+    //Make choosable Types list
+    for (uint8_t i = 0; i != maxTypeId; i++) {
+        if (std::find(std::begin(excludedTypes), std::end(excludedTypes), i) == std::end(excludedTypes))
+            choosables.push_back(i);
+    }
+    //Map types to pokemon ID
+    for (unsigned i = 0; i != 600; i++) {
+        std::pair<unsigned,unsigned> a;
+        a.first = rand() % choosables.size();
+        a.second = 0;
+        //40% chance for second Type
+        if ((rand() % 100) < 40) {
+            a.second = rand() % choosables.size();
+        }
+        randTypeIndex.push_back(a);
+    }
+    //Assign the values to the pokemon entries
+    for (unsigned i = 0; i != 1155; i++) {
+        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+
+        //Get pokemon ID from memory
+        uint16_t ID = *(entry+4)+*(entry+5)*256;
+
+        memcpy(entry + 15, &choosables[randTypeIndex[ID].first], 1);
+        memcpy(entry + 16, &choosables[randTypeIndex[ID].second], 1);
     }
 }

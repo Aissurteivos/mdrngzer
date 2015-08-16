@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>mdrngzer</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -63,8 +63,23 @@
       </item>
       <item row="3" column="0">
        <widget class="QTabWidget" name="tabWidget">
+        <property name="tabPosition">
+         <enum>QTabWidget::North</enum>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Rounded</enum>
+        </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
+        </property>
+        <property name="elideMode">
+         <enum>Qt::ElideNone</enum>
+        </property>
+        <property name="documentMode">
+         <bool>false</bool>
+        </property>
+        <property name="movable">
+         <bool>false</bool>
         </property>
         <widget class="QWidget" name="PokemonTab">
          <property name="toolTipDuration">
@@ -186,6 +201,30 @@
                </widget>
               </item>
              </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="MiscTab">
+         <attribute name="title">
+          <string>Misc</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QScrollArea" name="scrollArea_3">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>455</width>
+               <height>132</height>
+              </rect>
+             </property>
             </widget>
            </widget>
           </item>

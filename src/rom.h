@@ -13,6 +13,7 @@ public:
     
     void randPokemon();
     void randAbilities();
+    void randTypes();
     
 private:
     std::vector<uint8_t> memory;
