@@ -164,13 +164,13 @@ void ROM::randAbilities() {
         PokemonAbility &a = pokemonAbilities.back();
         a.first = choosables[rand() % choosables.size()];
         
-        //55% chance for second ability
-        if ((rand() % 100) < 55)
+        //50% chance for second ability
+        if ((rand() % 100) < 50)
             a.second = choosables[rand() % choosables.size()];
         else
             a.second = 0;
     }
-    
+
     //Iterate through all pokemon entires and assign their abilities based on pokemon ID
     for (unsigned i = 0; i != 1155; i++) {
         uint8_t *entry = memory.data() + 0x00472808 + i * 68;
@@ -215,7 +215,7 @@ void ROM::randTypes() {
         else
             t.second = 0;
     }
-    
+
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
         uint8_t *entry = memory.data() + 0x00472808 + i * 68;
