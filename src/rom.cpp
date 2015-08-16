@@ -144,33 +144,40 @@ void ROM::randAbilities() {
         0x74  //Unknown ability, named "$$$"
     };
     
+    struct PokemonAbility {
+        uint8_t first, second;
+    };
+    
     std::vector<uint8_t> choosables;
-    std::vector<std::pair<unsigned,unsigned>> randAbilityIndex;
+    std::vector<PokemonAbility> pokemonAbilities;
+    
     //Make choosable abilitities list
     for (uint8_t i = 0; i != maxAbilityId; i++) {
         if (std::find(std::begin(excludedAbilities), std::end(excludedAbilities), i) == std::end(excludedAbilities))
             choosables.push_back(i);
     }
-    //Map abilities to pokemon ID
+    
+    //Map abilities to every pokemon ID
     for (unsigned i = 0; i != 600; i++) {
-        std::pair<unsigned,unsigned> a;
-        a.first = rand() % choosables.size();
-        a.second = 0;
+        pokemonAbilities.emplace_back();
+        PokemonAbility &a = pokemonAbilities.back();
+        a.first = choosables[rand() % choosables.size()];
         //55% chance for second ability
-        if ((rand() % 100) < 55) {
-            a.second = rand() % choosables.size();
-        }
-        randAbilityIndex.push_back(a);
+        if ((rand() % 100) < 55)
+            a.second = choosables[rand() % choosables.size()];
+        else
+            a.second = 0;
     }
-    //Assign the values to the pokemon entries
+    
+    //Iterate through all pokemon entires and assign their abilities based on pokemon ID
     for (unsigned i = 0; i != 1155; i++) {
         uint8_t *entry = memory.data() + 0x00472808 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
 
-        memcpy(entry + 0x18, &choosables[randAbilityIndex[ID].first], 1);
-        memcpy(entry + 0x19, &choosables[randAbilityIndex[ID].second], 1);
+        memcpy(entry + 0x18, &pokemonAbilities[ID].first, 1);
+        memcpy(entry + 0x19, &pokemonAbilities[ID].second, 1);
     }
 }
 
