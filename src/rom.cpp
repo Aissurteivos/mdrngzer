@@ -226,12 +226,12 @@ void ROM::randIQs() {
     
     std::vector<uint8_t> choosables;
     std::vector<unsigned> randIQIndex;
-    //Make choosable Types list
+    //Make choosable IQ's list
     for (uint8_t i = 0; i != maxIQId; i++) {
         if (std::find(std::begin(excludedIQs), std::end(excludedIQs), i) == std::end(excludedIQs))
             choosables.push_back(i);
     }
-    //Map types to pokemon ID
+    //Map IQ's to pokemon ID
     for (unsigned i = 0; i != 600; i++) {
         randIQIndex.push_back(rand() % choosables.size());
     }
