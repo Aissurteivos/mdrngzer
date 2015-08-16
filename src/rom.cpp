@@ -176,8 +176,8 @@ void ROM::randAbilities() {
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
 
-        memcpy(entry + 24, &choosables[randAbilityIndex[ID].first], 1);
-        memcpy(entry + 25, &choosables[randAbilityIndex[ID].second], 1);
+        memcpy(entry + 0x18, &choosables[randAbilityIndex[ID].first], 1);
+        memcpy(entry + 0x19, &choosables[randAbilityIndex[ID].second], 1);
     }
 }
 
@@ -207,7 +207,7 @@ void ROM::randTypes() {
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
 
-        memcpy(entry + 15, &choosables[randTypeIndex[ID].first], 1);
-        memcpy(entry + 16, &choosables[randTypeIndex[ID].second], 1);
+        memcpy(entry + 0x14, &choosables[randTypeIndex[ID].first], 1);
+        memcpy(entry + 0x15, &choosables[randTypeIndex[ID].second], 1);
     }
 }
