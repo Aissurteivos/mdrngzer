@@ -15,7 +15,8 @@ CONFIG += c++11
 
 SOURCES += src/main.cpp \
     src/dialog.cpp \
-    src/rom.cpp
+    src/rom.cpp \
+    src/rom_tables.cpp
 
 HEADERS  += \
     src/dialog.h \
