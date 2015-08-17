@@ -28,6 +28,7 @@ void Dialog::randomize() {
         rom.randAbilities();
         rom.randTypes();
         rom.randIQs();
+        rom.randMusic();
         rom.save(QFileDialog::getSaveFileName(this, "Choose a Destination", "", "Image FIles (*.nds)")
                  .toUtf8().constData());
         if (ui->PokemonSpawnEnable->isChecked()) {

@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
+#include <QDebug>
 
 ROM::ROM(unsigned seed) : rand(seed) {
 }
@@ -260,5 +261,53 @@ void ROM::randIQs() {
         uint16_t ID = *(entry+4)+*(entry+5)*256;
 
         memcpy(entry + 0x17, &pokemonIQs[ID], 1);
+    }
+}
+
+void ROM::randMusic() {
+    const uint8_t maxMusicId = 0x80;
+
+    const uint8_t excludedMusic[] = {
+        0x00, //No music
+        0x36, //No music
+        0x76, //No music
+        0x77, //No music
+        0x78, //No music
+        0x79, //No music
+        0x7A, //No music
+        0x7B, //No music
+        0x7C, //No music
+        0x7D, //No music
+        0x7E, //No music
+        0x7F  //No music
+    };
+
+    std::vector<uint8_t> choosables;
+    std::vector<uint8_t> Music;
+
+    for (uint8_t i = 0; i != maxMusicId; i++)
+        if (std::find(std::begin(excludedMusic), std::end(excludedMusic), i) == std::end(excludedMusic))
+            choosables.push_back(i);
+
+    //generate list for dungeon
+    for (unsigned i = 0; i != 200; i++)
+        Music.push_back(choosables[rand() % choosables.size()]);
+
+    unsigned count = 0;
+    uint8_t last = 0x01;
+
+    //Assign the values to the floor entries
+    for (unsigned i = 0; i != 1837; i++) {
+        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
+
+        uint8_t current = *(entry + 0x3);
+
+        if (last != current) {
+            count++;
+        }
+
+        last = *(entry + 0x3);
+        memcpy(entry + 0x3, &Music[count], 1);
+
     }
 }
