@@ -311,3 +311,61 @@ void ROM::randMusic() {
 
     }
 }
+
+void ROM::randTerrain() {
+    const uint8_t maxTerrainId = 0x90;
+
+    const uint8_t excludedTerrains[] = {
+        0x0D, //Invalid
+        0x15, //Invalid
+        0x29, //Invalid
+        0x2F, //Invalid
+        0x3C, //Invalid
+        0x46, //Invalid
+        0x47, //Invalid
+        0x48, //Invalid
+        0x49, //Invalid
+        0x4D, //Invalid
+        0x56, //Invalid
+        0x59, //Invalid
+        0x5C, //Invalid
+        0x5D, //Invalid
+        0x5F, //Invalid
+        0x59, //Invalid
+        0x62, //Invalid
+        0x64, //Invalid
+        0x6B, //Invalid
+        0x78, //Invalid
+        0x79, //Invalid
+        0x90, //Invalid
+    };
+
+    std::vector<uint8_t> choosables;
+    std::vector<uint8_t> Terrains;
+
+    for (uint8_t i = 0; i != maxTerrainId; i++)
+        if (std::find(std::begin(excludedTerrains), std::end(excludedTerrains), i) == std::end(excludedTerrains))
+            choosables.push_back(i);
+
+    //generate list for dungeon
+    for (unsigned i = 0; i != 250; i++)
+        Terrains.push_back(choosables[rand() % choosables.size()]);
+
+    unsigned count = 0;
+    uint8_t last = 0x00;
+
+    //Assign the values to the floor entries
+    for (unsigned i = 0; i != 1837; i++) {
+        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
+
+        uint8_t current = *(entry + 0x2);
+
+       if (last != current) {
+            count++;
+       }
+
+       last = *(entry + 0x2);
+       memcpy(entry + 0x2, &Terrains[count], 1);
+
+    }
+}

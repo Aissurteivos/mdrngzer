@@ -16,6 +16,7 @@ public:
     void randTypes();
     void randIQs();
     void randMusic();
+    void randTerrain();
     
 private:
     std::vector<uint8_t> memory;
