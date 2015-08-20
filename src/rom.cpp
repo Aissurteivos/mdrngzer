@@ -369,3 +369,120 @@ void ROM::randTerrain() {
 
     }
 }
+
+void ROM::randMoveset() {
+
+    const uint16_t maxMoveId = 0x21E;
+
+    //abandon all ye who enter here
+
+    const uint16_t excludedMoves[] = {
+        0x0000,  //Null move
+        0x0169,  //Null move
+        0x016A,  //Null move
+        0x016B,  //Null move
+        0x016C,  //Null move
+        0x016D,  //Null move
+        0x01E6,  //Null move
+        0x016F,  //Null move
+        0x0170,  //Null move
+        0x0171,  //Null move
+        0x0172,  //Null move
+        0x0173,  //Null move
+        0x0174,  //Null move
+        0x0175,  //Null move
+        0x0176,  //Null move
+        0x0177,  //Null move
+        0x0178,  //Null move
+        0x0179,  //Null move
+        0x017A,  //Null move
+        0x017B,  //Null move
+        0x017C,  //Null move
+        0x017D,  //Null move
+        0x017E,  //Null move
+        0x01F7,  //Null move
+        0x0180,  //Null move
+        0x0181,  //Null move
+        0x0182,  //Null move
+        0x0183,  //Null move
+        0x0184,  //Null move
+        0x0185,  //Null move
+        0x0186,  //Null move
+        0x0187,  //Null move
+        0x0188,  //Null move
+        0x0189,  //Null move
+        0x018A,  //Null move
+        0x018B,  //Null move
+        0x018C,  //Null move
+        0x018D,  //Null move
+        0x018E,  //Null move
+        0x018F,  //Null move
+        0x0190,  //Null move
+        0x0191,  //Null move
+        0x0192,  //Null move
+        0x0193,  //Null move
+        0x0194,  //Null move
+        0x0195,  //Null move
+        0x0196,  //Null move
+        0x0197,  //Null move
+        0x0198,  //Null move
+        0x0199,  //Null move
+        0x019A,  //Null move
+        0x019B,  //Null move
+        0x019C,  //Null move
+        0x019D,  //Null move
+        0x019E,  //Null move
+        0x019F,  //Null move
+        0x01A0,  //Null move
+        0x01A1,  //Null move
+        0x01A2,  //Null move
+        0x01A3,  //Null move
+        0x01A4,  //Null move
+        0x01A5,  //Null move
+        0x01A6,  //Null move
+        0x01A7,  //Null move
+        0x01A8,  //Null move
+        0x01A9,  //Null move
+        0x01AA,  //Null move
+        0x01AB,  //Null move
+        0x01AC,  //Null move
+        0x01AD,  //Null move
+        0x01D3,  //Null move
+        0x01D4   //Null move
+    };
+
+    std::vector<uint8_t> choosables;
+
+    for (uint16_t i = 0; i != maxMoveId; i++)
+        if (std::find(std::begin(excludedMoves), std::end(excludedMoves), i) == std::end(excludedMoves))
+            choosables.push_back(i);
+
+    unsigned position = 0;
+    uint8_t *entry = memory.data() + 0x00487410;
+
+    for (unsigned i = 0; i != 563; i++) {
+        unsigned levelSpace = 0;
+        while (*(entry + position) != 0x00) {
+              levelSpace++;
+              position++;
+        }
+        //do stuff
+        position++;
+
+        unsigned TMSpace = 0;
+        while (*(entry + position) != 0x00) {
+              TMSpace++;
+              position++;
+        }
+        //do stuff
+        position++;
+
+        unsigned eggSpace = 0;
+        while (*(entry + position) != 0x00) {
+              eggSpace++;
+              position++;
+        }
+        //do stuff
+        position++;
+    }
+}
