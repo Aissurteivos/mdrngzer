@@ -374,8 +374,6 @@ void ROM::randMoveset() {
 
     const uint16_t maxMoveId = 0x21E;
 
-    //abandon all ye who enter here
-
     const uint16_t excludedMoves[] = {
         0x0000,  //Null move
         0x0169,  //Null move
@@ -450,6 +448,52 @@ void ROM::randMoveset() {
         0x01D3,  //Null move
         0x01D4   //Null move
     };
+    
+    class LevelMove {
+    public:
+        LevelMove(uint16_t move, uint8_t level) : move(move), level(level) {}
+        
+        LevelMove(uint8_t *data) {
+            //If this is extended
+            if (data[0] & 0x80) {
+                move = ((data[0] & 0x7F) << 7) | (data[1] & 0x7F);
+                level = data[2];
+            } else {
+                move = data[0] & 0x7F;
+                level = data[1];
+            }
+        }
+        
+        bool isTerminating() {
+            return !move;
+        }
+        
+        bool isLarge() {
+            return move >= 128;
+        }
+        
+        std::size_t getSize() {
+            if (isLarge())
+                return 3;
+            else
+                return 2;
+        }
+
+        void write(uint8_t *location) {
+            if (isLarge()) {
+                location[0] = ((move >> 7) & 0x7F) | 0x80;
+                location[1] = move & 0x7F;
+                location[2] = level;
+            } else {
+                location[0] = move & 0x7F;
+                location[1] = level;
+            }
+        }
+        
+    private:
+        uint16_t move;
+        uint8_t level;
+    };
 
     std::vector<uint8_t> choosables;
 
@@ -457,32 +501,21 @@ void ROM::randMoveset() {
         if (std::find(std::begin(excludedMoves), std::end(excludedMoves), i) == std::end(excludedMoves))
             choosables.push_back(i);
 
-    unsigned position = 0;
     uint8_t *entry = memory.data() + 0x00487410;
 
-    for (unsigned i = 0; i != 563; i++) {
-        unsigned levelSpace = 0;
-        while (*(entry + position) != 0x00) {
-              levelSpace++;
-              position++;
-        }
-        //do stuff
-        position++;
+    for (unsigned i = 0, position = 0; i != 563; i++) {
+        uint8_t *levelList = entry + position;
+        unsigned levelSpace = strlen((char*)levelList);
+        //TODO: Randomize level moves
 
-        unsigned TMSpace = 0;
-        while (*(entry + position) != 0x00) {
-              TMSpace++;
-              position++;
-        }
-        //do stuff
-        position++;
-
-        unsigned eggSpace = 0;
-        while (*(entry + position) != 0x00) {
-              eggSpace++;
-              position++;
-        }
-        //do stuff
-        position++;
+        uint8_t *TMList = entry + position + levelSpace + 1;
+        unsigned TMSpace = strlen((char*)TMList);
+        //TODO: Randomize TM moves
+        
+        uint8_t *eggList = entry + position + levelSpace + TMSpace + 2;
+        unsigned eggSpace = strlen((char*)eggList);
+        //TODO: Randomize egg moves
+        
+        position += levelSpace + TMSpace + eggSpace + 3;
     }
 }
