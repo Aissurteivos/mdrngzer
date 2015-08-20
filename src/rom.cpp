@@ -454,6 +454,13 @@ void ROM::randMoveset() {
         LevelMove(uint16_t move, uint8_t level) : move(move), level(level) {}
         
         LevelMove(uint8_t *data) {
+            //Check if this is a terminator
+            if (data[0] == 0) {
+                move = 0;
+                level = 0;
+                return;
+            }
+            
             //If this is extended
             if (data[0] & 0x80) {
                 move = ((data[0] & 0x7F) << 7) | (data[1] & 0x7F);
