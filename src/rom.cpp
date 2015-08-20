@@ -534,7 +534,7 @@ void ROM::randMoveset() {
         
         //Switch on how much space is left
         switch (levelSpace - j) {
-        case 4: {
+        case 4:
             level += rand() % 5;
             if (level > 100)
                 level = 100;
@@ -546,6 +546,9 @@ void ROM::randMoveset() {
                     break;
                 }
             }
+            level += rand() % 5;
+            if (level > 100)
+                level = 100;
             while (true) {
                 LevelMove lmove(choosables[rand() % choosables.size()], level);
                 if (lmove.getSize() == 2) {
@@ -554,8 +557,11 @@ void ROM::randMoveset() {
                     break;
                 }
             }
-        } break;
+            break;
         case 3:
+            level += rand() % 5;
+            if (level > 100)
+                level = 100;
             while (true) {
                 LevelMove lmove(choosables[rand() % choosables.size()], level);
                 if (lmove.getSize() == 3) {
@@ -566,6 +572,9 @@ void ROM::randMoveset() {
             }
             break;
         case 2:
+            level += rand() % 5;
+            if (level > 100)
+                level = 100;
             while (true) {
                 LevelMove lmove(choosables[rand() % choosables.size()], level);
                 if (lmove.getSize() == 2) {
