@@ -503,10 +503,18 @@ void ROM::randMoveset() {
     };
 
     std::vector<uint16_t> choosables;
+    std::vector<uint16_t> size2Choosables;
+    std::vector<uint16_t> size3Choosables;
 
     for (uint16_t i = 0; i != maxMoveId; i++)
-        if (std::find(std::begin(excludedMoves), std::end(excludedMoves), i) == std::end(excludedMoves))
+        if (std::find(std::begin(excludedMoves), std::end(excludedMoves), i) == std::end(excludedMoves)) {
             choosables.push_back(i);
+            LevelMove m(i, 0);
+            if (m.getSize() == 2)
+                size2Choosables.push_back(i);
+            else
+                size3Choosables.push_back(i);
+        }
 
     uint8_t *entry = memory.data() + 0x00487410;
 
@@ -534,56 +542,37 @@ void ROM::randMoveset() {
         
         //Switch on how much space is left
         switch (levelSpace - j) {
-        case 4:
+        case 4: {
             level += rand() % 5;
             if (level > 100)
                 level = 100;
-            while (true) {
-                LevelMove lmove(choosables[rand() % choosables.size()], level);
-                if (lmove.getSize() == 2) {
-                    lmove.write(levelList + j);
-                    j += 2;
-                    break;
-                }
-            }
+            LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
+            lmove.write(levelList + j);
+            j += 2;
+        } {
             level += rand() % 5;
             if (level > 100)
                 level = 100;
-            while (true) {
-                LevelMove lmove(choosables[rand() % choosables.size()], level);
-                if (lmove.getSize() == 2) {
-                    lmove.write(levelList + j);
-                    j += 2;
-                    break;
-                }
-            }
-            break;
-        case 3:
+            LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
+            lmove.write(levelList + j);
+            j += 2;
+        } break;
+        case 3: {
             level += rand() % 5;
             if (level > 100)
                 level = 100;
-            while (true) {
-                LevelMove lmove(choosables[rand() % choosables.size()], level);
-                if (lmove.getSize() == 3) {
-                    lmove.write(levelList + j);
-                    j += 2;
-                    break;
-                }
-            }
-            break;
-        case 2:
+            LevelMove lmove(size3Choosables[rand() % size3Choosables.size()], level);
+            lmove.write(levelList + j);
+            j += 2;
+        } break;
+        case 2: {
             level += rand() % 5;
             if (level > 100)
                 level = 100;
-            while (true) {
-                LevelMove lmove(choosables[rand() % choosables.size()], level);
-                if (lmove.getSize() == 2) {
-                    lmove.write(levelList + j);
-                    j += 2;
-                    break;
-                }
-            }
-            break;
+            LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
+            lmove.write(levelList + j);
+            j += 2;
+        } break;
         }
         
         
