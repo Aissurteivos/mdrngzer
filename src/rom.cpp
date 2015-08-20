@@ -510,10 +510,10 @@ void ROM::randMoveset() {
         if (std::find(std::begin(excludedMoves), std::end(excludedMoves), i) == std::end(excludedMoves)) {
             choosables.push_back(i);
             LevelMove m(i, 0);
-            if (m.getSize() == 2)
-                size2Choosables.push_back(i);
-            else
+            if (m.isLarge())
                 size3Choosables.push_back(i);
+            else
+                size2Choosables.push_back(i);
         }
 
     uint8_t *entry = memory.data() + 0x00487410;
@@ -531,12 +531,12 @@ void ROM::randMoveset() {
                 level = 100;
             
             LevelMove lmove(choosables[rand() % choosables.size()], level);
-            if (lmove.getSize() == 2) {
-                lmove.write(levelList + j);
-                j += 2;
-            } else {
+            if (lmove.isLarge()) {
                 lmove.write(levelList + j);
                 j += 3;
+            } else {
+                lmove.write(levelList + j);
+                j += 2;
             }
         }
         
