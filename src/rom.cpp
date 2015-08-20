@@ -471,22 +471,22 @@ void ROM::randMoveset() {
             }
         }
         
-        bool isTerminating() {
+        bool isTerminating() const {
             return !move;
         }
         
-        bool isLarge() {
+        bool isLarge() const {
             return move >= 128;
         }
         
-        std::size_t getSize() {
+        std::size_t getSize() const {
             if (isLarge())
                 return 3;
             else
                 return 2;
         }
 
-        void write(uint8_t *location) {
+        void write(uint8_t *location) const {
             if (isLarge()) {
                 location[0] = ((move >> 7) & 0x7F) | 0x80;
                 location[1] = move & 0x7F;
@@ -502,7 +502,7 @@ void ROM::randMoveset() {
         uint8_t level;
     };
 
-    std::vector<uint8_t> choosables;
+    std::vector<uint16_t> choosables;
 
     for (uint16_t i = 0; i != maxMoveId; i++)
         if (std::find(std::begin(excludedMoves), std::end(excludedMoves), i) == std::end(excludedMoves))
@@ -513,7 +513,71 @@ void ROM::randMoveset() {
     for (unsigned i = 0, position = 0; i != 563; i++) {
         uint8_t *levelList = entry + position;
         unsigned levelSpace = strlen((char*)levelList);
-        //TODO: Randomize level moves
+        
+        unsigned j;
+        unsigned level;
+        for (j = 0, level = 0; j < levelSpace - 4; ) {
+            level += rand() % 5;
+            //Don't allow level above 100
+            if (level > 100)
+                level = 100;
+            
+            LevelMove lmove(choosables[rand() % choosables.size()], level);
+            if (lmove.getSize() == 2) {
+                lmove.write(levelList + j);
+                j += 2;
+            } else {
+                lmove.write(levelList + j);
+                j += 3;
+            }
+        }
+        
+        //Switch on how much space is left
+        switch (levelSpace - j) {
+        case 4: {
+            level += rand() % 5;
+            if (level > 100)
+                level = 100;
+            while (true) {
+                LevelMove lmove(choosables[rand() % choosables.size()], level);
+                if (lmove.getSize() == 2) {
+                    lmove.write(levelList + j);
+                    j += 2;
+                    break;
+                }
+            }
+            while (true) {
+                LevelMove lmove(choosables[rand() % choosables.size()], level);
+                if (lmove.getSize() == 2) {
+                    lmove.write(levelList + j);
+                    j += 2;
+                    break;
+                }
+            }
+        } break;
+        case 3:
+            while (true) {
+                LevelMove lmove(choosables[rand() % choosables.size()], level);
+                if (lmove.getSize() == 3) {
+                    lmove.write(levelList + j);
+                    j += 2;
+                    break;
+                }
+            }
+            break;
+        case 2:
+            while (true) {
+                LevelMove lmove(choosables[rand() % choosables.size()], level);
+                if (lmove.getSize() == 2) {
+                    lmove.write(levelList + j);
+                    j += 2;
+                    break;
+                }
+            }
+            break;
+        }
+        
+        
 
         uint8_t *TMList = entry + position + levelSpace + 1;
         unsigned TMSpace = strlen((char*)TMList);
