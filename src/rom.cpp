@@ -518,13 +518,13 @@ void ROM::randMoveset() {
 
     uint8_t *entry = memory.data() + 0x00487410;
 
-    for (unsigned i = 0, position = 0; i != 563; i++) {
+    for (unsigned i = 0, position = 0; i != 564; i++) {
         uint8_t *levelList = entry + position;
         unsigned levelSpace = strlen((char*)levelList);
-        
-        unsigned j;
+        int j = 0;
         unsigned level;
-        for (j = 0, level = 0; j < levelSpace - 4; ) {
+        int spaceRemain = levelSpace;
+        for (j = 0, level = 0; j < spaceRemain - 4; ) {
             level += rand() % 5;
             //Don't allow level above 100
             if (level > 100)
@@ -563,7 +563,7 @@ void ROM::randMoveset() {
                 level = 100;
             LevelMove lmove(size3Choosables[rand() % size3Choosables.size()], level);
             lmove.write(levelList + j);
-            j += 2;
+            j += 3;
         } break;
         case 2: {
             level += rand() % 5;
@@ -572,6 +572,8 @@ void ROM::randMoveset() {
             LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
             lmove.write(levelList + j);
             j += 2;
+        } break;
+        case 0: {
         } break;
         }
         
