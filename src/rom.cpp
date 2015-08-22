@@ -167,7 +167,9 @@ void ROM::randAbilities() {
         
         //50% chance for second ability
         if ((rand() % 100) < 50)
-            a.second = choosables[rand() % choosables.size()];
+            do {
+                a.second = choosables[rand() % choosables.size()];
+            } while ( a.second == a.first );
         else
             a.second = 0;
     }
@@ -208,11 +210,14 @@ void ROM::randTypes() {
     for (unsigned i = 0; i != 600; i++) {
         pokemonTypes.emplace_back();
         PokemonType &t = pokemonTypes.back();
-        t.first = rand() % choosables.size();
+        t.first = choosables[rand() % choosables.size()];
         
         //40% chance for second Type
-        if ((rand() % 100) < 40)
-            t.second = rand() % choosables.size();
+        if ((rand() % 100) < 40) {
+            do {
+                t.second = choosables[rand() % choosables.size()];
+            } while ( t.second == t.first );
+        }
         else
             t.second = 0;
     }
