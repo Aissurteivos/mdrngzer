@@ -22,7 +22,7 @@ void Dialog::chooseFile() {
 
 void Dialog::randomize() {
     try {
-        ROM rom(0);
+        ROM rom(56453123512);
         rom.open(ui->filenameTextEdit->toPlainText().toUtf8().constData());
         rom.randPokemon();
         rom.randAbilities();

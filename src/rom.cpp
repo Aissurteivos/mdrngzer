@@ -456,7 +456,10 @@ void ROM::randMoveset() {
     
     class LevelMove {
     public:
-        LevelMove(uint16_t move, uint8_t level) : move(move), level(level) {}
+        LevelMove(uint16_t move, uint8_t level) : move(move), level(level) {
+            if (level < 6)
+                LevelMove::level = 1;
+        }
         
         LevelMove(uint8_t *data) {
             //Check if this is a terminator
@@ -534,11 +537,6 @@ void ROM::randMoveset() {
         unsigned level;
         int spaceRemain = levelSpace;
         for (j = 0, level = 1; j < spaceRemain - 4; ) {
-            level += rand() % 5;
-            //Don't allow level above 100
-            if (level > 50)
-                level = 50;
-            
             LevelMove lmove(choosables[rand() % choosables.size()], level);
             if (lmove.isLarge()) {
                 lmove.write(levelList + j);
@@ -547,8 +545,12 @@ void ROM::randMoveset() {
                 lmove.write(levelList + j);
                 j += 2;
             }
+            level += 1 + rand() % 5;
+            //Don't allow level above 100
+            if (level > 50)
+                level = 50;
         }
-        
+
         //Switch on how much space is left
         switch (levelSpace - j) {
         case 4: {
