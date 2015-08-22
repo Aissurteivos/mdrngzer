@@ -518,7 +518,7 @@ void ROM::randMoveset() {
 
     uint8_t *entry = memory.data() + 0x00487410;
 
-    for (unsigned i = 0, position = 0; i != 564; i++) {
+    for (unsigned i = 0, position = 0; i != 553; i++) {
         uint8_t *levelList = entry + position;
         unsigned levelSpace = 0;
 
@@ -529,7 +529,7 @@ void ROM::randMoveset() {
         unsigned level;
         int spaceRemain = levelSpace;
         for (j = 0, level = 1; j < spaceRemain - 4; ) {
-            level += rand() % 3;
+            level += rand() % 5;
             //Don't allow level above 100
             if (level > 50)
                 level = 50;
@@ -547,14 +547,14 @@ void ROM::randMoveset() {
         //Switch on how much space is left
         switch (levelSpace - j) {
         case 4: {
-            level += rand() % 3;
+            level += rand() % 5;
             if (level > 50)
                 level = 50;
             LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
             lmove.write(levelList + j);
             j += 2;
         } {
-            level += rand() % 3;
+            level += rand() % 5;
             if (level > 50)
                 level = 50;
             LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
@@ -562,7 +562,7 @@ void ROM::randMoveset() {
             j += 2;
         } break;
         case 3: {
-            level += rand() % 3;
+            level += rand() % 5;
             if (level > 50)
                 level = 50;
             LevelMove lmove(size3Choosables[rand() % size3Choosables.size()], level);
@@ -570,7 +570,7 @@ void ROM::randMoveset() {
             j += 3;
         } break;
         case 2: {
-            level += rand() % 3;
+            level += rand() % 5;
             if (level > 50)
                 level = 50;
             LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
