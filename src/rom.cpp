@@ -536,8 +536,23 @@ void ROM::randMoveset() {
         int j = 0;
         unsigned level;
         int spaceRemain = levelSpace;
+
+        std::map<unsigned, int> moveMap;
+
         for (j = 0, level = 1; j < spaceRemain - 4; ) {
-            LevelMove lmove(choosables[rand() % choosables.size()], level);
+
+
+            unsigned move = rand() % choosables.size();
+            auto f = moveMap.find(move);
+            while (f != moveMap.end()){
+                move = rand() % choosables.size();
+                f = moveMap.find(move);
+            }
+
+            moveMap[move] = 1;
+
+            LevelMove lmove(choosables[move], level);
+
             if (lmove.isLarge()) {
                 lmove.write(levelList + j);
                 j += 3;
@@ -545,6 +560,7 @@ void ROM::randMoveset() {
                 lmove.write(levelList + j);
                 j += 2;
             }
+
             level += 1 + rand() % 5;
             //Don't allow level above 100
             if (level > 50)
