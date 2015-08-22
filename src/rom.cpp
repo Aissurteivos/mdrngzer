@@ -398,7 +398,7 @@ void ROM::randMoveset() {
         0x017C,  //Null move
         0x017D,  //Null move
         0x017E,  //Null move
-        0x01F7,  //Null move
+        0x017F,  //Null move
         0x0180,  //Null move
         0x0181,  //Null move
         0x0182,  //Null move
@@ -496,7 +496,7 @@ void ROM::randMoveset() {
                 location[1] = level;
             }
         }
-        
+
     private:
         uint16_t move;
         uint8_t level;
@@ -520,7 +520,11 @@ void ROM::randMoveset() {
 
     for (unsigned i = 0, position = 0; i != 564; i++) {
         uint8_t *levelList = entry + position;
-        unsigned levelSpace = strlen((char*)levelList);
+        unsigned levelSpace = 0;
+
+        while (*(entry + position + levelSpace) != 0 || *(entry + position + levelSpace-1) > 0x7F)
+            levelSpace++;
+
         int j = 0;
         unsigned level;
         int spaceRemain = levelSpace;
