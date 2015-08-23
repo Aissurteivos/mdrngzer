@@ -22,6 +22,19 @@ public:
 private:
     std::vector<uint8_t> memory;
     std::mt19937 rand;
+    
+    template<typename Type>
+    Type& vecRand(std::vector<Type> &vec) {
+        return vec[rand() % vec.size()];
+    }
+    
+    template<typename Type>
+    Type vecRandAndRemove(std::vector<Type> &vec) {
+        auto loc = vec.begin() + (rand() % vec.size());
+        Type val = *loc;
+        vec.erase(loc);
+        return val;
+    }
 };
 
 #endif // ROM_H

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <QDebug>
+#include <set>
 
 ROM::ROM(unsigned seed) : rand(seed) {
 }
@@ -130,10 +131,7 @@ void ROM::randPokemon() {
         if (finish)
             continue;
         
-        //Choose the pokemon to use
-        unsigned choice = rand() % choosables.size();
-        
-        memcpy(entry + 6, &choosables[choice], 2);
+        memcpy(entry + 6, &vecRand(choosables), 2);
     }
 }
 
@@ -163,12 +161,12 @@ void ROM::randAbilities() {
     for (unsigned i = 0; i != 600; i++) {
         pokemonAbilities.emplace_back();
         PokemonAbility &a = pokemonAbilities.back();
-        a.first = choosables[rand() % choosables.size()];
+        a.first = vecRand(choosables);
         
         //50% chance for second ability
         if ((rand() % 100) < 50)
             do {
-                a.second = choosables[rand() % choosables.size()];
+                a.second = vecRand(choosables);
             } while ( a.second == a.first );
         else
             a.second = 0;
@@ -210,13 +208,13 @@ void ROM::randTypes() {
     for (unsigned i = 0; i != 600; i++) {
         pokemonTypes.emplace_back();
         PokemonType &t = pokemonTypes.back();
-        t.first = choosables[rand() % choosables.size()];
+        t.first = vecRand(choosables);
         
         //40% chance for second Type
         if ((rand() % 100) < 40) {
             do {
-                t.second = choosables[rand() % choosables.size()];
-            } while ( t.second == t.first );
+                t.second = vecRand(choosables);
+            } while (t.second == t.first);
         }
         else
             t.second = 0;
@@ -256,7 +254,7 @@ void ROM::randIQs() {
     
     //Map IQ's to every pokemon ID
     for (unsigned i = 0; i != 600; i++)
-        pokemonIQs.push_back(choosables[rand() % choosables.size()]);
+        pokemonIQs.push_back(vecRand(choosables));
     
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
@@ -288,7 +286,7 @@ void ROM::randMusic() {
     };
 
     std::vector<uint8_t> choosables;
-    std::vector<uint8_t> Music;
+    std::vector<uint8_t> music;
 
     for (uint8_t i = 0; i != maxMusicId; i++)
         if (std::find(std::begin(excludedMusic), std::end(excludedMusic), i) == std::end(excludedMusic))
@@ -296,7 +294,7 @@ void ROM::randMusic() {
 
     //generate list for dungeon
     for (unsigned i = 0; i != 200; i++)
-        Music.push_back(choosables[rand() % choosables.size()]);
+        music.push_back(vecRand(choosables));
 
     unsigned count = 0;
     uint8_t last = 0x01;
@@ -312,7 +310,7 @@ void ROM::randMusic() {
         }
 
         last = *(entry + 0x3);
-        memcpy(entry + 0x3, &Music[count], 1);
+        memcpy(entry + 0x3, &music[count], 1);
 
     }
 }
@@ -346,7 +344,7 @@ void ROM::randTerrain() {
     };
 
     std::vector<uint8_t> choosables;
-    std::vector<uint8_t> Terrains;
+    std::vector<uint8_t> terrains;
 
     for (uint8_t i = 0; i != maxTerrainId; i++)
         if (std::find(std::begin(excludedTerrains), std::end(excludedTerrains), i) == std::end(excludedTerrains))
@@ -354,7 +352,7 @@ void ROM::randTerrain() {
 
     //generate list for dungeon
     for (unsigned i = 0; i != 250; i++)
-        Terrains.push_back(choosables[rand() % choosables.size()]);
+        terrains.push_back(vecRand(choosables));
 
     unsigned count = 0;
     uint8_t last = 0x00;
@@ -370,7 +368,7 @@ void ROM::randTerrain() {
        }
 
        last = *(entry + 0x2);
-       memcpy(entry + 0x2, &Terrains[count], 1);
+       memcpy(entry + 0x2, &terrains[count], 1);
 
     }
 }
@@ -536,22 +534,11 @@ void ROM::randMoveset() {
         int j = 0;
         unsigned level;
         int spaceRemain = levelSpace;
-
-        std::map<unsigned, int> moveMap;
+        
+        std::vector<uint16_t> levelChoosables(choosables);
 
         for (j = 0, level = 1; j < spaceRemain - 4; ) {
-
-
-            unsigned move = rand() % choosables.size();
-            auto f = moveMap.find(move);
-            while (f != moveMap.end()){
-                move = rand() % choosables.size();
-                f = moveMap.find(move);
-            }
-
-            moveMap[move] = 1;
-
-            LevelMove lmove(choosables[move], level);
+            LevelMove lmove(vecRandAndRemove(levelChoosables), level);
 
             if (lmove.isLarge()) {
                 lmove.write(levelList + j);
@@ -562,7 +549,7 @@ void ROM::randMoveset() {
             }
 
             level += 1 + rand() % 5;
-            //Don't allow level above 100
+            //Don't allow level above 50
             if (level > 50)
                 level = 50;
         }
@@ -570,38 +557,43 @@ void ROM::randMoveset() {
         //Switch on how much space is left
         switch (levelSpace - j) {
         case 4: {
-            level += rand() % 5;
-            if (level > 50)
-                level = 50;
-            LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
+            uint16_t move;
+            while (std::find(levelChoosables.begin(), levelChoosables.end(), move = vecRand(size2Choosables))
+                   == levelChoosables.end());
+            //Since we will get one more move after this, remove it from choosables
+            levelChoosables.erase(std::find(levelChoosables.begin(), levelChoosables.end(), move));
+            LevelMove lmove(move, level);
             lmove.write(levelList + j);
             j += 2;
-        } {
             level += rand() % 5;
             if (level > 50)
                 level = 50;
-            LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
+        } {
+            uint16_t move;
+            while (std::find(levelChoosables.begin(), levelChoosables.end(), move = vecRand(size2Choosables))
+                   == levelChoosables.end());
+            LevelMove lmove(move, level);
             lmove.write(levelList + j);
             j += 2;
         } break;
         case 3: {
-            level += rand() % 5;
-            if (level > 50)
-                level = 50;
-            LevelMove lmove(size3Choosables[rand() % size3Choosables.size()], level);
+            uint16_t move;
+            while (std::find(levelChoosables.begin(), levelChoosables.end(), move = vecRand(size3Choosables))
+                   == levelChoosables.end());
+            LevelMove lmove(move, level);
             lmove.write(levelList + j);
             j += 3;
         } break;
         case 2: {
-            level += rand() % 5;
-            if (level > 50)
-                level = 50;
-            LevelMove lmove(size2Choosables[rand() % size2Choosables.size()], level);
+            uint16_t move;
+            while (std::find(levelChoosables.begin(), levelChoosables.end(), move = vecRand(size2Choosables))
+                   == levelChoosables.end());
+            LevelMove lmove(move, level);
             lmove.write(levelList + j);
             j += 2;
         } break;
-        case 0: {
-        } break;
+        default:
+            break;
         }
 
 
