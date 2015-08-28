@@ -675,7 +675,7 @@ void ROM::randItems() {
         if (std::find(std::begin(excludedItems), std::end(excludedItems), i) == std::end(excludedItems)) {
             choosables.push_back(i);
 
-            //seperate items into their repective groups
+            //Separate items into their respective groups
 
             if ((i >= 0x0001 && i <= 0x0006) || i == 0x0009 )
                 groupChoosables[THROWN_LINE].push_back(i);
