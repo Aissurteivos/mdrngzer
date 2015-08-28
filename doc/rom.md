@@ -3,21 +3,21 @@
 All memory in this rom is in Little-endian format
 ##mappa_s.bin 0x003D3A00 - 0x00415D20
 
-###Floor index 0x003D3A2A - 0x003DC628
+###Floor index 0x003D3A22 - 0x003DC628
 
 Each floor in this game has its own 18-byte list that points to other locations in the rom.
 
 |Offset|Value|
 |------|:----|
-|00-01|Kecleon shop Index (same as item)|
-|02-03|Unknown|
-|04-05|Unknown|
-|06-07|Unknown|
-|08-09|Unknown|
-|0A-0B|Floor terrain Index|
-|0C-0D|Pokemon spawn Index|
-|0E-0F|Trap spawn Index?|
-|10-11|Item spawn Index|
+|00-01|Floor terrain Index|
+|02-03|Pokemon spawn Index|
+|04-05|Trap spawn Index?|
+|06-07|Item spawn Index|
+|08-09|Kecleon shop Index (same as item)|
+|0A-0B|Monster house item Index (same as item)|
+|0C-0D|Buried item Index (same as item)|
+|0E-0F|Unknown|
+|10-11|Unknown|
 
 ###Floor terrain data 0x003DC7B0 - 0x003EB1D0
 Each floor in this game has 32 byte terrain data entry in a list.
@@ -45,9 +45,9 @@ The values are as shown in the table:
 |11|Floor counter|
 |12|Event index?|
 |13|Unknown|
-|14|Buried Item density?|
-|15|Water density?|
-|16|Darkness level?|
+|14|Buried Item density|
+|15|Water density|
+|16|Darkness level|
 |17|Coin Max, steps of 40|
 |18|Unknown|
 |19|Unknown|
