@@ -9,7 +9,7 @@ Each floor in this game has its own 18-byte list that points to other locations 
 
 |Offset|Value|
 |------|:----|
-|00-01|Unknown|
+|00-01|Kecleon shop Index (same as item)|
 |02-03|Unknown|
 |04-05|Unknown|
 |06-07|Unknown|
