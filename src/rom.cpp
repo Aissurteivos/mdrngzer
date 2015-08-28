@@ -653,4 +653,51 @@ void ROM::randItems() {
         0x0169,  //Null item
         0x016B   //Null item
     };
+
+
+    std::vector<uint16_t> choosables;
+    std::vector<uint16_t> thrownLineChoosables;
+    std::vector<uint16_t> thrownArcChoosables;
+    std::vector<uint16_t> heldChoosables;
+    std::vector<uint16_t> berrySeedChoosables;
+    std::vector<uint16_t> foodChoosables;
+    std::vector<uint16_t> otherChoosables;
+    std::vector<uint16_t> TMChoosables;
+    std::vector<uint16_t> orbChoosables;
+    std::vector<uint16_t> boxChoosables;
+
+    for (uint16_t i = 0; i != maxItemId; i++)
+        if (std::find(std::begin(excludedItems), std::end(excludedItems), i) == std::end(excludedItems)) {
+            choosables.push_back(i);
+            LevelMove m(i, 0);
+
+            //seperate items into their repective groups
+
+            if ((i >= 0x0001 && i <= 0x0006) || i == 0x0009 )
+                thrownLineChoosables.push_back(i);
+
+            if ((i >= 0x0007 && i <= 0x0008) || i == 0x000A )
+                thrownArcChoosables.push_back(i);
+
+            if (i >= 0x000D && i <= 0x0044)
+                heldChoosables.push_back(i);
+
+            if ((i >= 0x0045 && i <= 0x006C) || (i >= 0x0074 && i <= 0x0076))
+                berrySeedChoosables.push_back(i);
+
+            if ((i >= 0x006D && i <= 0x0070) || (i >= 0x0077 && i <= 0x0089) || i == 0x0073 )
+                foodChoosables.push_back(i);
+
+            if (i >= 0x008B && i <= 0x00BA)
+                otherChoosables.push_back(i);
+
+            if (i >= 0x00BC && i <= 0x0124)
+                TMChoosables.push_back(i);
+
+            if (i >= 0x012D && i <= 0x0167)
+                orbChoosables.push_back(i);
+
+            if (i == 0x016A)
+                boxChoosables.push_back(i);
+        }
 }
