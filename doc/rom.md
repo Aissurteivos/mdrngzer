@@ -3,7 +3,7 @@
 All memory in this rom is in Little-endian format
 ##mappa_s.bin 0x003D3A00 - 0x00415D20
 
-###Floor index 0x003D3A22 - 0x003DC628
+###Floor index 0x003D3A22 - 0x003DC620
 
 Each floor in this game has its own 18-byte list that points to other locations in the rom.
 
