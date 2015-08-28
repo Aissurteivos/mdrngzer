@@ -669,7 +669,6 @@ void ROM::randItems() {
     for (uint16_t i = 0; i != maxItemId; i++)
         if (std::find(std::begin(excludedItems), std::end(excludedItems), i) == std::end(excludedItems)) {
             choosables.push_back(i);
-            LevelMove m(i, 0);
 
             //seperate items into their repective groups
 
