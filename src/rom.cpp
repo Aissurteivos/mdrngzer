@@ -608,3 +608,49 @@ void ROM::randMoveset() {
         position += levelSpace + TMSpace + eggSpace + 3;
     }
 }
+
+void ROM::randItems() {
+
+    const uint16_t maxItemId = 0x016B;
+
+    const uint16_t excludedItems[] = {
+        0x000B,  //Null item
+        0x000C,  //Null item
+        0x0062,  //Null item
+        0x0071,  //Null item
+        0x0072,  //Null item
+        0x008A,  //Null item
+        0x00A6,  //Null item
+        0x00AF,  //Null item
+        0x00B0,  //Null item
+        0x00B1,  //Null item
+        0x00B5,  //Null item
+        0x00B8,  //Null item
+        0x00B9,  //Null item
+        0x00C2,  //Null item
+        0x00C6,  //Null item
+        0x00CD,  //Null item
+        0x00DB,  //Null item
+        0x00E0,  //Null item
+        0x00E2,  //Null item
+        0x00EC,  //Null item
+        0x0102,  //Null item
+        0x0103,  //Null item
+        0x0125,  //Null item
+        0x0126,  //Null item
+        0x0127,  //Null item
+        0x0128,  //Null item
+        0x0129,  //Null item
+        0x012A,  //Null item
+        0x012B,  //Null item
+        0x012C,  //Null item
+        0x0144,  //Null item
+        0x0153,  //Null item
+        0x0159,  //Null item
+        0x015D,  //Null item
+        0x0161,  //Null item
+        0x0168,  //Null item
+        0x0169,  //Null item
+        0x016B   //Null item
+    };
+}
