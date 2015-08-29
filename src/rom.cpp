@@ -704,4 +704,13 @@ void ROM::randItems() {
             if (i == 0x016A)
                 groupChoosables[BOX].push_back(i);
         }
+    uint8_t *entry = memory.data() + 0x00415404;
+    unsigned position = 0;
+    for (unsigned i = 0; i < 216; i++) {
+        //find size by subtracting next pointer from the current one
+        uint32_t size = (*(entry+(i*4)+4) | *(entry+(i*4)+5)<<8 | *(entry+(i*4)+6)<<16 | *(entry+(i*4)+7)<<24 );
+        size -= (*(entry+(i*4)) | *(entry+(i*4)+1)<<8 | *(entry+(i*4)+2)<<16 | *(entry+(i*4)+3)<<24 );
+        //qDebug() << "List " << i << "is " << size << "bytes long."
+    }
+
 }
