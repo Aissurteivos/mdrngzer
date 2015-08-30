@@ -615,6 +615,7 @@ void ROM::randItems() {
     const uint16_t maxItemId = 0x016B;
 
     const uint16_t excludedItems[] = {
+        0x0000,  //No item
         0x000B,  //Null item
         0x000C,  //Null item
         0x0062,  //Null item
@@ -628,6 +629,7 @@ void ROM::randItems() {
         0x00B5,  //Null item
         0x00B8,  //Null item
         0x00B9,  //Null item
+        0x00BB,  //Used TM, not a dungeon item
         0x00C2,  //Null item
         0x00C6,  //Null item
         0x00CD,  //Null item
@@ -704,13 +706,26 @@ void ROM::randItems() {
             if (i == 0x016A)
                 groupChoosables[BOX].push_back(i);
         }
-    uint8_t *entry = memory.data() + 0x00415404;
+
+    const int weights[TOTAL] { 7, 3, 56, 42, 24, 41, 96, 54, 1 }; //total 324
+
+    uint8_t *ptrList = memory.data() + 0x00415404; // list of pointers to every list
+    uint8_t *valueStart = memory.data() + 0x00409428; // start of item lists
+
     unsigned position = 0;
+
     for (unsigned i = 0; i < 216; i++) {
         //find size by subtracting next pointer from the current one
-        uint32_t size = (*(entry+(i*4)+4) | *(entry+(i*4)+5)<<8 | *(entry+(i*4)+6)<<16 | *(entry+(i*4)+7)<<24 );
-        size -= (*(entry+(i*4)) | *(entry+(i*4)+1)<<8 | *(entry+(i*4)+2)<<16 | *(entry+(i*4)+3)<<24 );
-        //qDebug() << "List " << i << "is " << size << "bytes long."
+
+        uint32_t size = (*(ptrList+(i*4)+4) | *(ptrList+(i*4)+5)<<8 | *(ptrList+(i*4)+6)<<16 | *(ptrList+(i*4)+7)<<24 );
+        size -= (*(ptrList+(i*4)) | *(ptrList+(i*4)+1)<<8 | *(ptrList+(i*4)+2)<<16 | *(ptrList+(i*4)+3)<<24 );
+
+        //generate list before writing to memory
+        for (unsigned j = 0, spaceRemain = size; j < spaceRemain - 4; ) {
+            int item = rand() % 324;
+            //todo: probability stuff here
+        }
+
     }
 
 }
