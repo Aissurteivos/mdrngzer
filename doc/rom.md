@@ -82,15 +82,15 @@ Another pokemon that seems to have its probability set to 0 is castform and its 
 ----To be explained later----  
 
 Category
-0x0 = Thrown (Pierce)
-0x1 = Thrown (Rock)
-0x2 = Berries/Seeds/Vitamins
-0x3 = Food/Gummies
-0x4 = Hold
-0x5 = TMS
-0x6 = Orbs
-0x8 = Misc items
-A = Link Box
+0x0 = Thrown (Pierce)  
+0x1 = Thrown (Rock)  
+0x2 = Berries/Seeds/Vitamins  
+0x3 = Food/Gummies  
+0x4 = Hold  
+0x5 = TMS  
+0x6 = Orbs  
+0x8 = Misc items  
+A = Link Box  
 
 "+" means in addition to the range  
 "-" means to exclude from the range  
