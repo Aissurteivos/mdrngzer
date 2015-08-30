@@ -660,13 +660,13 @@ void ROM::randItems() {
     enum Group {
         THROWN_LINE,
         THROWN_ARC,
-        HELD,
         BERRY_SEED,
         FOOD,
-        OTHER,
+        HELD,
         TM,
         ORB,
-        BOX,
+        OTHER = 8,
+        BOX = 10,
         TOTAL
     };
 
