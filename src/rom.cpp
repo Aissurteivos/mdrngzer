@@ -717,8 +717,8 @@ void ROM::randItems() {
     for (unsigned i = 0; i < 216; i++) {
         //find size by subtracting next pointer from the current one
 
-        uint32_t size = (*(uint32_t*)(ptrList+(i*4)+4));
-        size -= (*(ptrList+(i*4)) | *(ptrList+(i*4)+1)<<8 | *(ptrList+(i*4)+2)<<16 | *(ptrList+(i*4)+3)<<24 );
+        uint32_t size = *(uint32_t*)(ptrList+(i*4)+4);
+        size -= *(uint32_t*)(ptrList+(i*4));
 
         //generate list before writing to memory
         for (unsigned j = 0, spaceRemain = size; j < spaceRemain - 4; ) {
