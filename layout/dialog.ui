@@ -161,6 +161,9 @@
               </item>
               <item row="2" column="0">
                <widget class="QCheckBox" name="StatsEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Level up stats</string>
                 </property>
@@ -253,6 +256,9 @@
               </item>
               <item row="1" column="0">
                <widget class="QCheckBox" name="ItemSpawnEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Item spawns</string>
                 </property>
@@ -274,6 +280,9 @@
               </item>
               <item row="4" column="0">
                <widget class="QCheckBox" name="WeatherEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Weather</string>
                 </property>
