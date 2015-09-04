@@ -736,7 +736,5 @@ void ROM::randItems() {
         list.normalize(size);
         list.write((uint16_t*)(valueStart + position));
         position += size;
-
     }
-
 }
