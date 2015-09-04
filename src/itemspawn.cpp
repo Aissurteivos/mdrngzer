@@ -69,14 +69,23 @@ void ItemSpawn::normalize(unsigned sizeLimit) {
         double itemTotalProbability = 0.0;
         
         for (auto j = items.begin(); j != items.end(); j++)
-            itemTotalProbability += j->second.probability;
+            if (&j->second.category == &i->second)
+                itemTotalProbability += j->second.probability;
         
-        for (auto j = items.begin(); j != items.end(); j++) {
-            j->second.probability /= itemTotalProbability;
-            
-            if (j != items.begin())
-                j->second.probability += std::prev(j)->second.probability;
-        }
+        //The first time we find an item we dont want to add the previous probability
+        bool first = true;
+        auto last = items.end();
+        
+        for (auto j = items.begin(); j != items.end(); j++)
+            if (&j->second.category == &i->second) {
+                j->second.probability /= itemTotalProbability;
+                
+                if (first)
+                    first = false;
+                else
+                    j->second.probability += last->second.probability;
+                last = j;
+            }
     }
 }
 
