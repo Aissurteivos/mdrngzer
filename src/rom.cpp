@@ -723,11 +723,11 @@ void ROM::randItems() {
 
         ItemSpawn list(rand);
 
-        for (unsigned j; j < TOTAL; j++) {
+        for (unsigned j = 0; j < TOTAL; j++) {
             if (weights[j]) {
                 list.addCategory(j, weights[j]);
 
-                for (unsigned k; k < groupChoosables[j].size();k++) {
+                for (unsigned k = 0; k < groupChoosables[j].size();k++) {
                     list.addItem((groupChoosables[j][k]) + 0x10, j);
                 }
             }
