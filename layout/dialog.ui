@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Dialog</class>
  <widget class="QDialog" name="Dialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,7 +16,7 @@
   <property name="windowTitle">
    <string>mdrngzer</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
@@ -22,7 +25,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QLabel" name="FileSelectLabel">
         <property name="text">
@@ -89,7 +92,7 @@
           <string>Pokemon</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
+          <item row="0" column="1">
            <widget class="QScrollArea" name="scrollArea_2">
             <property name="widgetResizable">
              <bool>true</bool>
@@ -99,8 +102,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>455</width>
-               <height>132</height>
+               <width>438</width>
+               <height>133</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_6">
@@ -108,6 +111,44 @@
                <widget class="QCheckBox" name="AbilitiesEnable">
                 <property name="text">
                  <string>Abilities</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" alignment="Qt::AlignRight">
+               <widget class="QLabel" name="AbilityPercentLabel">
+                <property name="text">
+                 <string>Second ability chance</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2" alignment="Qt::AlignLeft">
+               <widget class="QSpinBox" name="AbilityPercentBox">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="wrapping">
+                 <bool>false</bool>
+                </property>
+                <property name="correctionMode">
+                 <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
+                </property>
+                <property name="suffix">
+                 <string>%</string>
+                </property>
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>50</number>
                 </property>
                </widget>
               </item>
@@ -120,6 +161,9 @@
               </item>
               <item row="2" column="0">
                <widget class="QCheckBox" name="StatsEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Level up stats</string>
                 </property>
@@ -136,6 +180,44 @@
                <widget class="QCheckBox" name="IQGroupEnable">
                 <property name="text">
                  <string>IQ Group</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2" alignment="Qt::AlignLeft">
+               <widget class="QSpinBox" name="TypePercentBox">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="wrapping">
+                 <bool>false</bool>
+                </property>
+                <property name="correctionMode">
+                 <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
+                </property>
+                <property name="suffix">
+                 <string>%</string>
+                </property>
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>40</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1" alignment="Qt::AlignRight">
+               <widget class="QLabel" name="TypePercentLabel">
+                <property name="text">
+                 <string>Second type chance</string>
                 </property>
                </widget>
               </item>
@@ -174,6 +256,9 @@
               </item>
               <item row="1" column="0">
                <widget class="QCheckBox" name="ItemSpawnEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Item spawns</string>
                 </property>
@@ -195,6 +280,9 @@
               </item>
               <item row="4" column="0">
                <widget class="QCheckBox" name="WeatherEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Weather</string>
                 </property>
@@ -238,5 +326,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>AbilitiesEnable</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>AbilityPercentBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>151</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TypeEnable</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>TypePercentBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>69</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>353</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

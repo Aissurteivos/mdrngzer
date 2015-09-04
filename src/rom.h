@@ -12,8 +12,8 @@ public:
     void save(const std::string &filePath);
     
     void randPokemon();
-    void randAbilities();
-    void randTypes();
+    void randAbilities(unsigned percent);
+    void randTypes(unsigned percent);
     void randIQs();
     void randMusic();
     void randTerrain();

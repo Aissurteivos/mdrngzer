@@ -136,7 +136,7 @@ void ROM::randPokemon() {
     }
 }
 
-void ROM::randAbilities() {
+void ROM::randAbilities(unsigned percent) {
     const uint8_t maxAbilityId = 0x7C;
     
     const uint8_t excludedAbilities[] = {
@@ -164,8 +164,8 @@ void ROM::randAbilities() {
         PokemonAbility &a = pokemonAbilities.back();
         a.first = vecRand(choosables);
         
-        //50% chance for second ability
-        if ((rand() % 100) < 50)
+        //Try for second ability
+        if ((rand() % 100) < percent)
             do {
                 a.second = vecRand(choosables);
             } while ( a.second == a.first );
@@ -185,7 +185,7 @@ void ROM::randAbilities() {
     }
 }
 
-void ROM::randTypes() {
+void ROM::randTypes(unsigned percent) {
     const uint8_t maxTypeId = 0x12;
     
     const uint8_t excludedTypes[] = {
@@ -211,8 +211,8 @@ void ROM::randTypes() {
         PokemonType &t = pokemonTypes.back();
         t.first = vecRand(choosables);
         
-        //40% chance for second Type
-        if ((rand() % 100) < 40) {
+        //Try for second Type
+        if ((rand() % 100) < percent) {
             do {
                 t.second = vecRand(choosables);
             } while (t.second == t.first);
@@ -660,13 +660,13 @@ void ROM::randItems() {
     enum Group {
         THROWN_LINE,
         THROWN_ARC,
-        HELD,
         BERRY_SEED,
         FOOD,
-        OTHER,
+        HELD,
         TM,
         ORB,
-        BOX,
+        OTHER = 8,
+        BOX = 10,
         TOTAL
     };
 
@@ -723,6 +723,7 @@ void ROM::randItems() {
         //generate list before writing to memory
         for (unsigned j = 0, spaceRemain = size; j < spaceRemain - 4; ) {
             int item = rand() % 324;
+            j++;
             //todo: probability stuff here
         }
 

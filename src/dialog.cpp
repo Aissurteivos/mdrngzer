@@ -25,16 +25,14 @@ void Dialog::randomize() {
         ROM rom(314159);
         rom.open(ui->filenameTextEdit->toPlainText().toUtf8().constData());
 
-        rom.randItems();
-
         if (ui->PokemonSpawnEnable->isChecked())
             rom.randPokemon();
 
         if (ui->AbilitiesEnable->isChecked())
-            rom.randAbilities();
+            rom.randAbilities(ui->AbilityPercentBox->value());
 
         if (ui->TypeEnable->isChecked())
-            rom.randTypes();
+            rom.randTypes(ui->TypePercentBox->value());
 
         if (ui->IQGroupEnable->isChecked())
             rom.randIQs();
