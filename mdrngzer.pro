@@ -15,11 +15,13 @@ CONFIG += c++11
 
 SOURCES += src/main.cpp \
     src/dialog.cpp \
-    src/rom.cpp
+    src/rom.cpp \
+    src/itemspawn.cpp
 
 HEADERS  += \
     src/dialog.h \
-    src/rom.h
+    src/rom.h \
+    src/itemspawn.h
 
 FORMS    += \
     layout/dialog.ui
