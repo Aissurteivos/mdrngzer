@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <random>
+#include "Itemspawn.h"
 
 class ROM {
 public:

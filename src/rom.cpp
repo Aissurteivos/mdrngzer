@@ -707,7 +707,8 @@ void ROM::randItems() {
                 groupChoosables[BOX].push_back(i);
         }
 
-    const int weights[TOTAL] { 7, 3, 56, 42, 24, 41, 96, 54, 1 }; //total 324
+    const int weights[TOTAL] { 7, 3, 42, 24, 56, 96, 54, 0, 41, 0, 1 }; //total 324
+
 
     uint8_t *ptrList = memory.data() + 0x00415404; // list of pointers to every list
     uint8_t *valueStart = memory.data() + 0x00409428; // start of item lists
@@ -720,12 +721,21 @@ void ROM::randItems() {
         uint32_t size = *(uint32_t*)(ptrList+(i*4)+4);
         size -= *(uint32_t*)(ptrList+(i*4));
 
-        //generate list before writing to memory
-        for (unsigned j = 0, spaceRemain = size; j < spaceRemain - 4; ) {
-            int item = rand() % 324;
-            j++;
-            //todo: probability stuff here
+        ItemSpawn list(rand);
+
+        for (unsigned j; j < TOTAL; j++) {
+            if (weights[j]) {
+                list.addCategory(j, weights[j]);
+
+                for (unsigned k; k < groupChoosables[j].size();k++) {
+                    list.addItem((groupChoosables[j][k]) + 0x10, j);
+                }
+            }
         }
+
+        list.normalize(size);
+        list.write((uint16_t*)(valueStart + position));
+        position += size;
 
     }
 
