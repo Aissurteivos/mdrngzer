@@ -23,7 +23,7 @@ void ItemSpawn::normalize(unsigned sizeLimit) {
         //Decrease the size
 
         //Remove a category if the amount of categories are greater than a third of the amount of items
-        if (categories.size() * 3 > items.size()) {
+        if (categories.size() * MINIMUM_ITEM_TO_CATEGORY_RATIO > items.size()) {
             unsigned selection = rand() % categories.size();
             auto i = std::next(categories.begin(), selection);
             Category &category = i->second;

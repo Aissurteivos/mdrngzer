@@ -5,6 +5,8 @@
 #include <map>
 #include <random>
 
+#define MINIMUM_ITEM_TO_CATEGORY_RATIO 2
+
 struct Category {
     Category(double probability) : probability(probability), items(0) {}
     void addItem() {
