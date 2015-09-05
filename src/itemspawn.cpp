@@ -1,6 +1,6 @@
 #include "itemspawn.h"
 #include <random>
-#include <qDebug>
+#include <QDebug>
 
 ItemSpawn::ItemSpawn(std::mt19937 &rand) : rand(rand) {}
 
@@ -9,7 +9,7 @@ void ItemSpawn::addCategory(uint16_t offset, unsigned size) {
 }
 
 void ItemSpawn::addItem(uint16_t offset, uint16_t categoryOffset) {
-    std::normal_distribution<> normRand(4, 2);
+    std::normal_distribution<double> normRand(4.0, 2.0);
     double result;
     while ((result = normRand(rand)) < 0);
     Category &c = categories.at(categoryOffset);
@@ -45,7 +45,7 @@ void ItemSpawn::normalize(unsigned sizeLimit) {
                     //Derease items in category
                     j->second.items--;
                     //Lower probability of category based on how many items are in it
-                    j->second.probability *= (j->second.items) / (j->second.items + 1);
+                    j->second.probability *= double(j->second.items) / double(j->second.items + 1);
                     //Erase category when no items are left
                     if (j->second.items == 0)
                         categories.erase(j);
