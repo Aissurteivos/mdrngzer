@@ -1,5 +1,6 @@
 #include "itemspawn.h"
 #include <random>
+#include <qDebug>
 
 ItemSpawn::ItemSpawn(std::mt19937 &rand) : rand(rand) {}
 
@@ -18,8 +19,9 @@ void ItemSpawn::addItem(uint16_t offset, uint16_t categoryOffset) {
 
 void ItemSpawn::normalize(unsigned sizeLimit) {
     while (testSize() > sizeLimit) {
+
         //Decrease the size
-        
+
         //Remove a category if the amount of categories are greater than a third of the amount of items
         if (categories.size() * 3 > items.size()) {
             unsigned selection = rand() % categories.size();
@@ -33,6 +35,7 @@ void ItemSpawn::normalize(unsigned sizeLimit) {
                 } else
                     j++;
             }
+            categories.erase(i);
         } else {
             unsigned selection = rand() % items.size();
             auto i = std::next(items.begin(), selection);

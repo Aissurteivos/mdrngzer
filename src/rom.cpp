@@ -724,7 +724,7 @@ void ROM::randItems() {
         ItemSpawn list(rand);
 
         for (unsigned j = 0; j < TOTAL; j++) {
-            if (weights[j]) {
+            if (weights[j] != 0) {
                 list.addCategory(j, weights[j]);
 
                 for (unsigned k = 0; k < groupChoosables[j].size();k++) {
