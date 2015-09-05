@@ -25,7 +25,8 @@ void Dialog::randomize() {
         ROM rom(314159);
         rom.open(ui->filenameTextEdit->toPlainText().toUtf8().constData());
 
-        rom.randItems();
+        if (ui->ItemSpawnEnable->isChecked())
+            rom.randItems();
 
         if (ui->PokemonSpawnEnable->isChecked())
             rom.randPokemon();

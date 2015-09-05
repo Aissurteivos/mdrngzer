@@ -73,7 +73,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <property name="elideMode">
          <enum>Qt::ElideNone</enum>
@@ -257,7 +257,7 @@
               <item row="1" column="0">
                <widget class="QCheckBox" name="ItemSpawnEnable">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
                  <string>Item spawns</string>
@@ -309,8 +309,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>455</width>
-               <height>132</height>
+               <width>98</width>
+               <height>28</height>
               </rect>
              </property>
             </widget>
