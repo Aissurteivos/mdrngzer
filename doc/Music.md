@@ -22,11 +22,14 @@ These are the names of the music attatched to each ID
 34|Surrounded Sea
 36|Aegis Cave
 37|Concealed Ruins
+39|In the Nightmare
 44|
-45|Surrounded Sea?
+45|Lower Brine Cave
 69|Chasm Cave
 70|Random Dungeon Theme 1
 72|Star Cave
+75|Murky Forest (SE2)
+76|Sky Peak Caves
 77|Fortune Ravine (SE2)
 78|Fortune Ravine Depths (SE2)
 80|Barren Valley (SE5)
