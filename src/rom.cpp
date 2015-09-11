@@ -664,8 +664,9 @@ void ROM::randItems() {
         FOOD,
         HELD,
         TM,
-        ORB,
+        COINS,
         OTHER = 8,
+        ORB = 9,
         BOX = 10,
         TOTAL
     };
@@ -694,7 +695,7 @@ void ROM::randItems() {
             if ((i >= 0x006D && i <= 0x0070) || (i >= 0x0077 && i <= 0x0089) || i == 0x0073 )
                 groupChoosables[FOOD].push_back(i);
 
-            if (i >= 0x008B && i <= 0x00BA)
+            if (i >= 0x008B && i <= 0x00BA && i != 0x00B7)
                 groupChoosables[OTHER].push_back(i);
 
             if (i >= 0x00BC && i <= 0x0124)
@@ -705,9 +706,12 @@ void ROM::randItems() {
 
             if (i == 0x016A)
                 groupChoosables[BOX].push_back(i);
+
+            if (i == 0x00B7)
+                groupChoosables[COINS].push_back(i);
         }
 
-    const int weights[TOTAL] { 7, 3, 42, 24, 56, 96, 54, 0, 41, 0, 1 }; //total 324
+    const int weights[TOTAL] { 7, 3, 142, 224, 56, 96, 1, 0, 41, 54, 1 }; //total 324
 
 
     uint8_t *ptrList = memory.data() + 0x00415404; // list of pointers to every list
