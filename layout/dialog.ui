@@ -10,14 +10,14 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>300</height>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>mdrngzer</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="1">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -26,14 +26,28 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+      <item row="0" column="1">
        <widget class="QLabel" name="FileSelectLabel">
         <property name="text">
          <string>Select ROM to randomize:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="5" column="1" colspan="3">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="3">
+       <widget class="QPushButton" name="randomizeButton">
+        <property name="text">
+         <string>Randomize</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
        <widget class="QPlainTextEdit" name="filenameTextEdit">
         <property name="maximumSize">
          <size>
@@ -43,28 +57,31 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1" colspan="3">
+       <widget class="Line" name="line">
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="RandomLabel">
+        <property name="text">
+         <string>Select Options:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
        <widget class="QPushButton" name="browseButton">
         <property name="text">
          <string>Browse</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="RandomLabel">
-        <property name="text">
-         <string>Select what to randomize:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="randomizeButton">
-        <property name="text">
-         <string>Randomize</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
+      <item row="4" column="1">
        <widget class="QTabWidget" name="tabWidget">
         <property name="tabPosition">
          <enum>QTabWidget::North</enum>
@@ -73,7 +90,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="elideMode">
          <enum>Qt::ElideNone</enum>
@@ -102,22 +119,22 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>438</width>
-               <height>133</height>
+               <width>446</width>
+               <height>119</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_6">
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="AbilitiesEnable">
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="MovesetEnable">
                 <property name="text">
-                 <string>Abilities</string>
+                 <string>Moveset</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="1" alignment="Qt::AlignRight">
-               <widget class="QLabel" name="AbilityPercentLabel">
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="TypeEnable">
                 <property name="text">
-                 <string>Second ability chance</string>
+                 <string>Type</string>
                 </property>
                </widget>
               </item>
@@ -152,38 +169,28 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="MovesetEnable">
+              <item row="0" column="1" alignment="Qt::AlignRight">
+               <widget class="QLabel" name="AbilityPercentLabel">
                 <property name="text">
-                 <string>Moveset</string>
+                 <string>Second ability chance</string>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="StatsEnable">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
+              <item row="2" column="1" alignment="Qt::AlignRight">
+               <widget class="QLabel" name="TypePercentLabel">
                 <property name="text">
-                 <string>Level up stats</string>
+                 <string>Second type chance</string>
                 </property>
                </widget>
               </item>
               <item row="3" column="0">
-               <widget class="QCheckBox" name="TypeEnable">
-                <property name="text">
-                 <string>Type</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
                <widget class="QCheckBox" name="IQGroupEnable">
                 <property name="text">
                  <string>IQ Group</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="2" alignment="Qt::AlignLeft">
+              <item row="2" column="2" alignment="Qt::AlignLeft">
                <widget class="QSpinBox" name="TypePercentBox">
                 <property name="enabled">
                  <bool>false</bool>
@@ -214,10 +221,10 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="1" alignment="Qt::AlignRight">
-               <widget class="QLabel" name="TypePercentLabel">
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="AbilitiesEnable">
                 <property name="text">
-                 <string>Second type chance</string>
+                 <string>Abilities</string>
                 </property>
                </widget>
               </item>
@@ -242,8 +249,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>455</width>
-               <height>132</height>
+               <width>429</width>
+               <height>127</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_5">
@@ -264,10 +271,13 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="TerrainEnable">
+              <item row="4" column="0">
+               <widget class="QCheckBox" name="WeatherEnable">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
-                 <string>Terrain appearance</string>
+                 <string>Weather</string>
                 </property>
                </widget>
               </item>
@@ -278,13 +288,10 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
-               <widget class="QCheckBox" name="WeatherEnable">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="TerrainEnable">
                 <property name="text">
-                 <string>Weather</string>
+                 <string>Terrain appearance</string>
                 </property>
                </widget>
               </item>
@@ -309,14 +316,70 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>98</width>
-               <height>28</height>
+               <width>446</width>
+               <height>119</height>
               </rect>
              </property>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="TextEnable">
+                <property name="text">
+                 <string>Randomize text [UNSTABLE][Silly]</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </widget>
           </item>
          </layout>
+        </widget>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QFrame" name="frame_2">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="geometry">
+          <rect>
+           <x>327</x>
+           <y>1</y>
+           <width>141</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+         <property name="format">
+          <string/>
+         </property>
         </widget>
        </widget>
       </item>

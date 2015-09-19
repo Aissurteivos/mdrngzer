@@ -20,6 +20,7 @@ public:
     void randTerrain();
     void randMoveset();
     void randItems();
+    void randText();
     
 private:
     std::vector<uint8_t> memory;

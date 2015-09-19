@@ -49,6 +49,9 @@ void Dialog::randomize() {
         if (ui->MovesetEnable->isChecked())
             rom.randMoveset();
 
+        if (ui->TextEnable->isChecked())
+            rom.randText();
+
         rom.save(QFileDialog::getSaveFileName(this, "Choose a Destination", "", "Image FIles (*.nds)")
                  .toUtf8().constData());
 

@@ -742,3 +742,59 @@ void ROM::randItems() {
         position += size;
     }
 }
+
+void ROM::randText() {
+
+    std::vector<std::pair<std::string,unsigned>> choosables;
+    std::vector<unsigned> slotLength;
+
+    uint8_t *ptrList = memory.data() + 0x02075E00;
+    uint8_t *stringList = memory.data() + 0x02087E50;
+
+    for (unsigned i = 0;i < 18452; i++) {
+        std::pair<std::string,unsigned> message;
+        message.first = ((char*)((ptrList) + *(uint32_t*)(ptrList+(i*4))));
+        message.first.push_back(0x00);
+        message.second = strlen(message.first.c_str()) + 1;
+        slotLength.push_back(message.second);
+        choosables.push_back(message);
+    }
+
+
+    unsigned position = 0;
+
+    for (unsigned i = 0;i < 18452; i++) {
+        unsigned slotSize = slotLength[i];
+
+        std::vector<std::string> subChoosables;
+
+        for (unsigned k = 0; k != choosables.size(); k++) {
+            if (choosables[k].second == slotSize) {
+                subChoosables.push_back(choosables[k].first);
+            }
+        }
+
+        std::string message = vecRand(subChoosables);
+
+        std::pair<std::string,unsigned> deleteMe;
+        deleteMe.first = message;
+        deleteMe.second = slotSize;
+
+        auto it = std::find(std::begin(choosables), std::end(choosables), deleteMe);
+
+        choosables.erase(it);
+
+        qDebug() << message.c_str();
+
+        std::vector<char> data;
+
+        if (slotSize > 1) {
+            std::copy(message.begin(), message.end(), std::back_inserter(data));
+        } else if (slotSize == 1) {
+            data.push_back(0x00);
+        }
+
+        memcpy(stringList + position, &data[0], slotSize);
+        position += slotSize;
+    }
+}
