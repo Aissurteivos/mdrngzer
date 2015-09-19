@@ -11,6 +11,9 @@ ROM::ROM(unsigned seed) : rand(seed) {
 }
 
 void ROM::open(const std::string &filePath) {
+    if (filePath == "") {
+        throw std::string("Please select a ROM before trying to randomize.");
+    }
     std::ifstream file(filePath, std::ios::binary);
     file.seekg(0, std::ios::end);
     memory.resize(file.tellg());
@@ -751,6 +754,8 @@ void ROM::randText() {
     uint8_t *ptrList = memory.data() + 0x02075E00;
     uint8_t *stringList = memory.data() + 0x02087E50;
 
+    //read all the strings from memory, put them into a vector, along with their length
+
     for (unsigned i = 0;i < 18452; i++) {
         std::pair<std::string,unsigned> message;
         message.first = ((char*)((ptrList) + *(uint32_t*)(ptrList+(i*4))));
@@ -763,10 +768,13 @@ void ROM::randText() {
 
     unsigned position = 0;
 
+    //replace string with string of equal size
     for (unsigned i = 0;i < 18452; i++) {
-        unsigned slotSize = slotLength[i];
 
+        unsigned slotSize = slotLength[i];
         std::vector<std::string> subChoosables;
+
+        //create list of strings that meet the required length
 
         for (unsigned k = 0; k != choosables.size(); k++) {
             if (choosables[k].second == slotSize) {
@@ -776,6 +784,8 @@ void ROM::randText() {
 
         std::string message = vecRand(subChoosables);
 
+        //remove the string from choosables
+
         std::pair<std::string,unsigned> deleteMe;
         deleteMe.first = message;
         deleteMe.second = slotSize;
@@ -784,7 +794,7 @@ void ROM::randText() {
 
         choosables.erase(it);
 
-        qDebug() << message.c_str();
+        //convert string to a char* vector
 
         std::vector<char> data;
 
@@ -793,6 +803,8 @@ void ROM::randText() {
         } else if (slotSize == 1) {
             data.push_back(0x00);
         }
+
+        //write to memory
 
         memcpy(stringList + position, &data[0], slotSize);
         position += slotSize;
