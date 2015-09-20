@@ -79,7 +79,10 @@ Another pokemon that seems to have its probability set to 0 is castform and its 
 
 ###Item spawns 0x00409428 to 0x00415404
 
-----To be explained later----  
+Each dungeon has a list of items that can spawn inside of it, and uses an incremental system, best explained by OgreGunner
+[here] (http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686?page=5#58).
+
+Here are the categories and the respective items that go in them.
 
 |Category|Description|
 |------|:----|
@@ -89,10 +92,10 @@ Another pokemon that seems to have its probability set to 0 is castform and its 
 |0x3|Food/Gummies|
 |0x4|Held items|
 |0x5|TMs|
-|0x6|Orbs|
+|0x6|Coins|
 |0x7|Nothing|
 |0x8|Other items|
-|0x9|Nothing|
+|0x9|Orbs|
 |0xA|Link Box|
 |0xB|Nothing|
 |0xC|Nothing|
@@ -110,17 +113,18 @@ Another pokemon that seems to have its probability set to 0 is castform and its 
 |0x4|0x000D thru 0x0044|  
 |0x2|0x0045 thru 0x006C , 0x0074 thru 0x0076 - 0x0062|  
 |0x3|0x006D thru 0x0070 , 0x0077 thru 0x0089 + 0x0073|  
-|0x8|0x008B thru 0x00BA - 0x00A6, 0x00AF, 0x00B0, 0x00B1, 0x00B5, 0x00B8, 0x00B9|  
+|0x8|0x008B thru 0x00BA - 0x00A6, 0x00AF, 0x00B0, 0x00B1, 0x00B5, 0x00B7, 0x00B8, 0x00B9|  
+|0x6|0x00B7|
 |0x5|0x00BC thru 0x0124 - 0x00C2, 0x00C6, 0x00CD, 0x00DB, 0x00E0, 0x00E2, 0x00EC, 0x0102, 0x0103|  
-|0x6|0x012D thru 0x0167 - 0x0144, 0x0153, 0x0159, 0x015D, 0x0161|  
+|0x9|0x012D thru 0x0167 - 0x0144, 0x0153, 0x0159, 0x015D, 0x0161|  
 |0xA|0x016A|  
 
 
 ###Credits
 
 90% of the information in this doc has been gathered from these sources:  
-http://projectpokemon.org/wiki/Pok%C3%A9mon_Mystery_Dungeon_Explorers  
-http://www.gamefaqs.com/boards/955859-pokemon-mystery-dungeon-explorers-of-sky/51698562
-http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686
+http://projectpokemon.org/wiki/Pok%C3%A9mon_Mystery_Dungeon_Explorers - Big help!  
+[Gamefaq thread for explorers of sky] (http://www.gamefaqs.com/boards/955859-pokemon-mystery-dungeon-explorers-of-sky/51698562) - Bits of scattered information  
+[Gamefaq thread for explorers of Darkness/Time] (http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686) - Most Mappa_s.bin information!
 http://apointlessplace.net/wms/  
 http://apointlessplace.net/wms/data/ - A bunch of helpful lists
