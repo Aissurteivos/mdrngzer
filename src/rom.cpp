@@ -759,6 +759,12 @@ void ROM::randText() {
     for (unsigned i = 0;i < 18452; i++) {
         std::pair<std::string,unsigned> message;
         message.first = ((char*)((ptrList) + *(uint32_t*)(ptrList+(i*4))));
+
+        //change anything that makes the font 2, to make it font 0, this is to prevent glitching the text really bad
+        auto it = message.first.find("[FT:2]");
+        if (it!=std::string::npos)
+            message.first.replace(it, 6, "[FT:0]");
+
         message.first.push_back(0x00);
         message.second = strlen(message.first.c_str()) + 1;
         slotLength.push_back(message.second);
