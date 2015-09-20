@@ -125,6 +125,6 @@ Here are the categories and the respective items that go in them.
 90% of the information in this doc has been gathered from these sources:  
 http://projectpokemon.org/wiki/Pok%C3%A9mon_Mystery_Dungeon_Explorers - Big help!  
 [Gamefaq thread for explorers of sky] (http://www.gamefaqs.com/boards/955859-pokemon-mystery-dungeon-explorers-of-sky/51698562) - Bits of scattered information  
-[Gamefaq thread for explorers of Darkness/Time] (http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686) - Most Mappa_s.bin information!
+[Gamefaq thread for explorers of Darkness/Time] (http://www.gamefaqs.com/boards/938930-pokemon-mystery-dungeon-explorers-of-darkness/50597686) - Most Mappa_s.bin information!  
 http://apointlessplace.net/wms/  
 http://apointlessplace.net/wms/data/ - A bunch of helpful lists
