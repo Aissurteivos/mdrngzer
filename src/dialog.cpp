@@ -2,6 +2,7 @@
 #include "ui_dialog.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <ctime>
 #include "rom.h"
 
 Dialog::Dialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
@@ -22,7 +23,14 @@ void Dialog::chooseFile() {
 
 void Dialog::randomize() {
     try {
-        ROM rom(314159);
+        unsigned seed;
+        if (!(ui->SeedEnable->isChecked()))
+            seed = ui->SeedBox->value();
+        else
+            seed = std::time(NULL);
+
+        ROM rom(seed);
+
         rom.open(ui->filenameTextEdit->toPlainText().toUtf8().constData());
 
         ui->progressBar->setValue(0);
