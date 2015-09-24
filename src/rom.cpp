@@ -383,13 +383,18 @@ void ROM::randMoveset() {
 
     const uint16_t excludedMoves[] = {
         0x0000,  //Null move
+        0x0163,  //Regular attack, not a move
+        0x0164,  //Debug move "is watching"
+        0x0165,  //Debug bide
+        0x0166,  //Debug revenge
+        0x0167,  //Debug avalanche
         0x0169,  //Null move
         0x016A,  //Null move
-        0x016B,  //Null move
-        0x016C,  //Null move
-        0x016D,  //Null move
-        0x01E6,  //Null move
-        0x016F,  //Null move
+        0x016B,  //Orb move, "See-Trap"
+        0x016C,  //Orb move, "Takeaway"
+        0x016D,  //Orb move, "Rebound"
+        0x016E,  //Unused move, "Bloop Slash"
+        0x016F,  //Orb move, "Switcher"
         0x0170,  //Null move
         0x0171,  //Null move
         0x0172,  //Null move

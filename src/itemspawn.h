@@ -19,7 +19,6 @@ struct Category {
 
 struct Item {
     Item(const Category &category, double probability) : category(category), probability(probability) {}
-    Item(Item&&) = default;
     const Category &category;
     double probability;
 };
