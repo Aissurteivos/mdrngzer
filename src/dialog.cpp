@@ -75,6 +75,8 @@ void Dialog::randomize() {
         rom.save(QFileDialog::getSaveFileName(this, "Choose a Destination", "", "Image FIles (*.nds)")
                  .toUtf8().constData());
 
+        QMessageBox::information(this, "Complete", "Randomization complete!");
+
 
     } catch (const std::string &error) {
         QMessageBox::information(this, "Error", tr(error.c_str()));
