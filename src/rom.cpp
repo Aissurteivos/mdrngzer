@@ -21,7 +21,7 @@ void ROM::open(const std::string &filePath) {
     
     file.read((char*)memory.data(), memory.size());
     if (std::strcmp("POKEDUN SORAC2SE01", (char*)memory.data())) {
-        throw std::string("ROM: ROM must be Pokemon Mystery Dungeon - Explorers of Sky");
+        throw std::string("ROM: ROM must be Pokemon Mystery Dungeon - Explorers of Sky (US)");
     }
 }
 
