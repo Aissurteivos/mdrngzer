@@ -6,6 +6,9 @@
 #include <QDebug>
 #include <set>
 #include <array>
+#include <process.h>
+#include <direct.h>
+#include <stdio.h>
 
 ROM::ROM(unsigned seed) : rand(seed) {
 }
@@ -14,11 +17,40 @@ void ROM::open(const std::string &filePath) {
     if (filePath == "") {
         throw std::string("Please select a ROM before trying to randomize.");
     }
-    std::ifstream file(filePath, std::ios::binary);
+
+    mkdir("rom");
+
+    std::string romPath = "\"" + filePath + "\"";
+
+    const char *my_args[21]{
+        "ndstool.exe",
+        "-x",
+        romPath.c_str(),
+        "-9",
+        "\"rom/arm9.bin\"",
+        "-7",
+        "\"rom/arm7.bin\"",
+        "-y9",
+        "\"rom/y9.bin\"",
+        "-y7",
+        "\"rom/y7.bin\"",
+        "-d",
+        "\"rom/data\"",
+        "-y",
+        "\"rom/overlay\"",
+        "-t",
+        "\"rom/banner.bin\"",
+        "-h",
+        "\"rom/header.bin\"",
+        nullptr };
+
+    spawnv(P_WAIT, "ndstool.exe", my_args);
+
+    std::ifstream file("rom/header.bin", std::ios::binary);
     file.seekg(0, std::ios::end);
     memory.resize(file.tellg());
     file.seekg(0, std::ios::beg);
-    
+
     file.read((char*)memory.data(), memory.size());
     if (std::strcmp("POKEDUN SORAC2SE01", (char*)memory.data())) {
         throw std::string("ROM: ROM must be Pokemon Mystery Dungeon - Explorers of Sky (US)");
@@ -383,6 +415,7 @@ void ROM::randMoveset() {
 
     const uint16_t excludedMoves[] = {
         0x0000,  //Null move
+        0x0160,  //Struggle
         0x0163,  //Regular attack, not a move
         0x0164,  //Debug move "is watching"
         0x0165,  //Debug bide
@@ -390,56 +423,55 @@ void ROM::randMoveset() {
         0x0167,  //Debug avalanche
         0x0169,  //Null move
         0x016A,  //Null move
-        0x016B,  //Orb move, "See-Trap"
-        0x016C,  //Orb move, "Takeaway"
-        0x016D,  //Orb move, "Rebound"
+        0x016B,  //Item effect move, "See-Trap"
+        0x016C,  //Item effect move, "Takeaway"
+        0x016D,  //Item effect move, "Rebound"
         0x016E,  //Unused move, "Bloop Slash"
-        0x016F,  //Orb move, "Switcher"
-        0x0170,  //Null move
-        0x0171,  //Null move
-        0x0172,  //Null move
-        0x0173,  //Null move
-        0x0174,  //Null move
-        0x0175,  //Null move
-        0x0176,  //Null move
-        0x0177,  //Null move
-        0x0178,  //Null move
-        0x0179,  //Null move
-        0x017A,  //Null move
-        0x017B,  //Null move
-        0x017C,  //Null move
-        0x017D,  //Null move
-        0x017E,  //Null move
-        0x017F,  //Null move
-        0x0180,  //Null move
-        0x0181,  //Null move
-        0x0182,  //Null move
-        0x0183,  //Null move
-        0x0184,  //Null move
-        0x0185,  //Null move
-        0x0186,  //Null move
-        0x0187,  //Null move
-        0x0188,  //Null move
-        0x0189,  //Null move
-        0x018A,  //Null move
-        0x018B,  //Null move
-        0x018C,  //Null move
-        0x018D,  //Null move
-        0x018E,  //Null move
-        0x018F,  //Null move
-        0x0190,  //Null move
-        0x0191,  //Null move
-        0x0192,  //Null move
-        0x0193,  //Null move
+        0x016F,  //Item effect move, "Switcher"
+        0x0170,  //Item effect move, "Blowback"
+        0x0171,  //Item effect move, "Warp"
+        0x0172,  //Item effect move, "Transfer"
+        0x0173,  //Item effect move, "Slow Down"
+        0x0174,  //Item effect move, "Speed Boost"
+        0x0175,  //Item effect move, "Searchlight"
+        0x0176,  //Item effect move, "Petrify"
+        0x0177,  //Item effect move, "Stay Away"
+        0x0178,  //Item effect move, "Pounce"
+        0x0179,  //Item effect move, "Trawl"
+        0x017A,  //Item effect move, "Cleanse"
+        0x017B,  //Item effect move, "Observer"
+        0x017C,  //Item effect move, "Decoy Maker"
+        0x017D,  //Item effect move, "Siesta"
+        0x017E,  //Item effect move, "Totter"
+        0x017F,  //Item effect move, "Two-Edge"
+        0x0180,  //Item effect move, "No-Move"
+        0x0181,  //Item effect move, "Escape"
+        0x0182,  //Item effect move, "Scan"
+        0x0183,  //Item effect move, "Power-Ears"
+        0x0184,  //Item effect move, "Drought"
+        0x0185,  //Item effect move, "Trap Buster"
+        0x0186,  //Item effect move, "Wild Call"
+        0x0187,  //Item effect move, "Invisify"
+        0x0188,  //Item effect move, "One-Shot"
+        0x0189,  //Item effect move, "HP Gauge"
+        0x018B,  //Item effect move, "Reviver"
+        0x018C,  //Item effect move, "Shocker"
+        0x018D,  //Item effect move, "Echo"
+        0x018E,  //Item effect move, "Famish"
+        0x018F,  //Item effect move, "One-Room"
+        0x0190,  //Item effect move, "Fill-in"
+        0x0191,  //Item effect move, "Trapper"
+        0x0192,  //Item effect move, "Possess"
+        0x0193,  //Item effect move, "Itemize"
         0x0194,  //Null move
-        0x0195,  //Null move
-        0x0196,  //Null move
-        0x0197,  //Null move
-        0x0198,  //Null move
-        0x0199,  //Null move
-        0x019A,  //Null move
+        0x0195,  //Item effect move, "projectile"
+        0x0196,  //Item effect move, "Hurl"
+        0x0197,  //Item effect move, "Mobile"
+        0x0198,  //Item effect move, "Item-Toss"
+        0x0199,  //Item effect move, "See Stairs"
+        0x019A,  //Item effect move, "Long Toss"
         0x019B,  //Null move
-        0x019C,  //Null move
+        0x019C,  //Item effect move, "Pierce"
         0x019D,  //Null move
         0x019E,  //Null move
         0x019F,  //Null move
@@ -457,8 +489,7 @@ void ROM::randMoveset() {
         0x01AB,  //Null move
         0x01AC,  //Null move
         0x01AD,  //Null move
-        0x01D3,  //Null move
-        0x01D4   //Null move
+        0x01D3   //Null move
     };
     
     class LevelMove {

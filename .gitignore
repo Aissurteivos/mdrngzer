@@ -27,3 +27,6 @@
 *.out
 *.app
 mdrngzer.pro.user
+rom/
+x86/
+x64/
