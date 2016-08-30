@@ -5,11 +5,11 @@ All memory in this rom is in Little-endian format
 
 ###Floor index 0x003D3A22 - 0x003DC620
 
-Each floor in this game has its own 18-byte list that points to other locations in the rom.
+Each floor in this game has its own 18-byte list of indecies that points to other locations in the rom.
 
 |Offset|Value|
 |------|:----|
-|00-01|Floor terrain Index|
+|00-01|Attribute Index|
 |02-03|Pokemon spawn Index|
 |04-05|Trap spawn Index?|
 |06-07|Item spawn Index|
@@ -19,8 +19,8 @@ Each floor in this game has its own 18-byte list that points to other locations 
 |0E-0F|Unknown|
 |10-11|Unknown|
 
-###Floor terrain data 0x003DC7B0 - 0x003EB1D0
-Each floor in this game has 32 byte terrain data entry in a list.
+###Floor Attribute data 0x003DC7B0 - 0x003EB1D0
+Each floor in this game has 32 byte attribute data in a list, stored in order based on its value in the "Floor index".
 The values are as shown in the table:
 
 |Offset|Value|
@@ -56,6 +56,8 @@ The values are as shown in the table:
 |1C-1D|Enemy IQ|
 |1E|Padding|
 |1F|Padding|
+
+(Monster houses and Kecleon Shops may be mutually exclusive for a given floor?)
 
 ###Pokemon spawns 0x003EB1D0 to 0x00406E78
 

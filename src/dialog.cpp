@@ -35,43 +35,56 @@ void Dialog::randomize() {
 
         ui->progressBar->setValue(0);
 
-        if (ui->ItemSpawnEnable->isChecked())
-            rom.randItems();
-        ui->progressBar->setValue(10);
-
-        if (ui->PokemonSpawnEnable->isChecked())
-            rom.randPokemon();
-        ui->progressBar->setValue(20);
-
-        if (ui->AbilitiesEnable->isChecked())
-            rom.randAbilities(ui->AbilityPercentBox->value());
-        ui->progressBar->setValue(30);
-
-        if (ui->TypeEnable->isChecked())
-            rom.randTypes(ui->TypePercentBox->value());
-        ui->progressBar->setValue(40);
-
-        if (ui->IQGroupEnable->isChecked())
-            rom.randIQs();
-        ui->progressBar->setValue(50);
-
-        if (ui->MusicEnable->isChecked())
-            rom.randMusic();
-        ui->progressBar->setValue(60);
+        if(!rom.loadFile("rom/data/BALANCE/mappa_s.bin")) {
+            throw std::string("ROM: Failed to open mappa_s.bin");
+        }
 
         if (ui->TerrainEnable->isChecked())
             rom.randTerrain();
+        ui->progressBar->setValue(10);
+
+        if (ui->MusicEnable->isChecked())
+            rom.randMusic();
+        ui->progressBar->setValue(20);
+
+        if (ui->PokemonSpawnEnable->isChecked())
+            rom.randPokemon();
+        ui->progressBar->setValue(30);
+
+        if (ui->ItemSpawnEnable->isChecked())
+            rom.randItems();
+        ui->progressBar->setValue(40);
+
+        rom.saveFile("rom/data/BALANCE/mappa_s.bin");
+
+        if (ui->TypeEnable->isChecked())
+            rom.randTypes(ui->TypePercentBox->value());
+        ui->progressBar->setValue(50);
+
+        if (ui->IQGroupEnable->isChecked())
+            rom.randIQs();
+        ui->progressBar->setValue(60);
+
+        if (ui->AbilitiesEnable->isChecked())
+            rom.randAbilities(ui->AbilityPercentBox->value());
         ui->progressBar->setValue(70);
+
+
 
         if (ui->MovesetEnable->isChecked())
             rom.randMoveset();
         ui->progressBar->setValue(80);
 
+
+
         if (ui->TextEnable->isChecked())
             rom.randText();
         ui->progressBar->setValue(90);
 
+
+
         ui->progressBar->setValue(100);
+
         rom.save(QFileDialog::getSaveFileName(this, "Choose a Destination", "", "Image FIles (*.nds)")
                  .toUtf8().constData());
 

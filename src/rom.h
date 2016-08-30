@@ -11,6 +11,8 @@ public:
     ROM(unsigned seed);
     void open(const std::string &filePath);
     void save(const std::string &filePath);
+    int loadFile(const std::string &filePath);
+    int saveFile(const std::string &filePath);
     
     void randPokemon();
     void randAbilities(unsigned percent);

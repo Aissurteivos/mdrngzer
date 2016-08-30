@@ -13,6 +13,36 @@
 ROM::ROM(unsigned seed) : rand(seed) {
 }
 
+int ROM::loadFile(const std::string &filePath) {
+
+    std::ifstream file(filePath, std::ios::binary);
+
+    if (!file) {
+        return 1;
+    }
+
+    file.seekg(0, std::ios::end);
+    memory.resize(file.tellg());
+    file.seekg(0, std::ios::beg);
+
+    file.read((char*)memory.data(), memory.size());
+
+    file.close();
+
+    return 0;
+}
+
+int ROM::saveFile(const std::string &filePath) {
+
+    std::ofstream file(filePath, std::ios::binary);
+
+    file.write((char*)memory.data(), memory.size());
+
+    file.close();
+
+    return 0;
+}
+
 void ROM::open(const std::string &filePath) {
     if (filePath == "") {
         throw std::string("Please select a ROM before trying to randomize.");
@@ -46,12 +76,10 @@ void ROM::open(const std::string &filePath) {
 
     spawnv(P_WAIT, "ndstool.exe", my_args);
 
-    std::ifstream file("rom/header.bin", std::ios::binary);
-    file.seekg(0, std::ios::end);
-    memory.resize(file.tellg());
-    file.seekg(0, std::ios::beg);
+    if(!loadFile("rom/header.bin")) {
+        throw std::string("ROM: Failed to open header.bin");
+    }
 
-    file.read((char*)memory.data(), memory.size());
     if (std::strcmp("POKEDUN SORAC2SE01", (char*)memory.data())) {
         throw std::string("ROM: ROM must be Pokemon Mystery Dungeon - Explorers of Sky (US)");
     }
@@ -60,6 +88,114 @@ void ROM::open(const std::string &filePath) {
 void ROM::save(const std::string &filePath) {
     std::ofstream file(filePath, std::ios::binary);
     file.write((char*)memory.data(), memory.size());
+}
+
+
+
+void ROM::randTerrain() {
+    const uint8_t maxTerrainId = 0x90;
+
+    const uint8_t excludedTerrains[] = {
+        0x0D, //Invalid
+        0x15, //Invalid
+        0x29, //Invalid
+        0x2F, //Invalid
+        0x3C, //Invalid
+        0x46, //Invalid
+        0x47, //Invalid
+        0x48, //Invalid
+        0x49, //Invalid
+        0x4D, //Invalid
+        0x56, //Invalid
+        0x59, //Invalid
+        0x5C, //Invalid
+        0x5D, //Invalid
+        0x5F, //Invalid
+        0x59, //Invalid
+        0x62, //Invalid
+        0x64, //Invalid
+        0x6B, //Invalid
+        0x78, //Invalid
+        0x79, //Invalid
+        0x90, //Invalid
+    };
+
+    std::vector<uint8_t> choosables;
+    std::vector<uint8_t> terrains;
+
+    for (uint8_t i = 0; i != maxTerrainId; i++)
+        if (std::find(std::begin(excludedTerrains), std::end(excludedTerrains), i) == std::end(excludedTerrains))
+            choosables.push_back(i);
+
+    //generate list for dungeon
+    for (unsigned i = 0; i != 250; i++)
+        terrains.push_back(vecRand(choosables));
+
+    unsigned count = 0;
+    uint8_t last = 0x00;
+
+    //Assign the values to the floor entries
+    for (unsigned i = 0; i != 1837; i++) {
+        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
+
+        uint8_t current = *(entry + 0x2);
+
+       if (last != current) {
+            count++;
+       }
+
+       last = *(entry + 0x2);
+       memcpy(entry + 0x2, &terrains[count], 1);
+
+    }
+}
+
+void ROM::randMusic() {
+    const uint8_t maxMusicId = 0x80;
+
+    const uint8_t excludedMusic[] = {
+        0x00, //No music
+        0x36, //No music
+        0x76, //No music
+        0x77, //No music
+        0x78, //No music
+        0x79, //No music
+        0x7A, //No music
+        0x7B, //No music
+        0x7C, //No music
+        0x7D, //No music
+        0x7E, //No music
+        0x7F  //No music
+    };
+
+    std::vector<uint8_t> choosables;
+    std::vector<uint8_t> music;
+
+    for (uint8_t i = 0; i != maxMusicId; i++)
+        if (std::find(std::begin(excludedMusic), std::end(excludedMusic), i) == std::end(excludedMusic))
+            choosables.push_back(i);
+
+    //generate list for dungeon
+    for (unsigned i = 0; i != 200; i++)
+        music.push_back(vecRand(choosables));
+
+    unsigned count = 0;
+    uint8_t last = 0x01;
+
+    //Assign the values to the floor entries
+    for (unsigned i = 0; i != 1837; i++) {
+        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
+
+        uint8_t current = *(entry + 0x3);
+
+        if (last != current) {
+            count++;
+        }
+
+        last = *(entry + 0x3);
+        memcpy(entry + 0x3, &music[count], 1);
+
+    }
 }
 
 void ROM::randPokemon() {
@@ -142,6 +278,7 @@ void ROM::randPokemon() {
         0x0214, //Manaphy
         0x0215, //Darkrai
         0x0216, //Shaymin
+        0x0217, //Shaymin Sky
         0x0229  //Decoy
     };
     
@@ -150,9 +287,9 @@ void ROM::randPokemon() {
     for (uint16_t i = 0; i != maxPokemonId; i++)
         if (std::find(std::begin(excludedPokemon), std::end(excludedPokemon), i) == std::end(excludedPokemon))
             choosables.push_back(i);
-    
+
     for (unsigned i = 0; i != 14229; i++) {
-        uint8_t *entry = memory.data() + 0x003EB1D0 + i * 8;
+        uint8_t *entry = memory.data() + 0x000177D0 + i * 8;
         //Check for every unchoosable pokemon type
         bool finish = false;
         for (uint16_t excludable : excludedPokemon) {
@@ -168,6 +305,224 @@ void ROM::randPokemon() {
             continue;
         
         memcpy(entry + 6, &vecRand(choosables), 2);
+    }
+}
+
+void ROM::randItems() {
+
+    const uint16_t maxItemId = 0x016B;
+
+    const uint16_t excludedItems[] = {
+        0x0000,  //No item
+        0x000B,  //Null item
+        0x000C,  //Null item
+        0x0062,  //Null item
+        0x0071,  //Null item
+        0x0072,  //Null item
+        0x008A,  //Null item
+        0x00A6,  //Null item
+        0x00AF,  //Null item
+        0x00B0,  //Null item
+        0x00B1,  //Null item
+        0x00B5,  //Null item
+        0x00B8,  //Null item
+        0x00B9,  //Null item
+        0x00BB,  //Used TM, not a dungeon item
+        0x00C2,  //Null item
+        0x00C6,  //Null item
+        0x00CD,  //Null item
+        0x00DB,  //Null item
+        0x00E0,  //Null item
+        0x00E2,  //Null item
+        0x00EC,  //Null item
+        0x0102,  //Null item
+        0x0103,  //Null item
+        0x0125,  //Null item
+        0x0126,  //Null item
+        0x0127,  //Null item
+        0x0128,  //Null item
+        0x0129,  //Null item
+        0x012A,  //Null item
+        0x012B,  //Null item
+        0x012C,  //Null item
+        0x0144,  //Null item
+        0x0153,  //Null item
+        0x0159,  //Null item
+        0x015D,  //Null item
+        0x0161,  //Null item
+        0x0168,  //Null item
+        0x0169,  //Null item
+        0x016B   //Null item
+    };
+
+    enum Group {
+        THROWN_LINE,
+        THROWN_ARC,
+        BERRY_SEED,
+        FOOD,
+        HELD,
+        TM,
+        COINS,
+        OTHER = 8,
+        ORB = 9,
+        BOX = 10,
+        TOTAL
+    };
+
+    std::vector<uint16_t> choosables;
+    std::array<std::vector<uint16_t>, TOTAL> groupChoosables;
+
+    for (uint16_t i = 0; i != maxItemId; i++)
+        if (std::find(std::begin(excludedItems), std::end(excludedItems), i) == std::end(excludedItems)) {
+            choosables.push_back(i);
+
+            //Separate items into their respective groups
+
+            if ((i >= 0x0001 && i <= 0x0006) || i == 0x0009 )
+                groupChoosables[THROWN_LINE].push_back(i);
+
+            if ((i >= 0x0007 && i <= 0x0008) || i == 0x000A )
+                groupChoosables[THROWN_ARC].push_back(i);
+
+            if (i >= 0x000D && i <= 0x0044)
+                groupChoosables[HELD].push_back(i);
+
+            if ((i >= 0x0045 && i <= 0x006C) || (i >= 0x0074 && i <= 0x0076))
+                groupChoosables[BERRY_SEED].push_back(i);
+
+            if ((i >= 0x006D && i <= 0x0070) || (i >= 0x0077 && i <= 0x0089) || i == 0x0073 )
+                groupChoosables[FOOD].push_back(i);
+
+            if (i >= 0x008B && i <= 0x00BA && i != 0x00B7)
+                groupChoosables[OTHER].push_back(i);
+
+            if (i >= 0x00BC && i <= 0x0124)
+                groupChoosables[TM].push_back(i);
+
+            if (i >= 0x012D && i <= 0x0167)
+                groupChoosables[ORB].push_back(i);
+
+            if (i == 0x016A)
+                groupChoosables[BOX].push_back(i);
+
+            if (i == 0x00B7)
+                groupChoosables[COINS].push_back(i);
+        }
+
+    const int weights[TOTAL] { 7, 3, 142, 224, 56, 96, 1, 0, 41, 54, 1 }; //total 324
+
+
+    uint8_t *ptrList = memory.data() + 0x00415404; // list of pointers to every list
+    uint8_t *valueStart = memory.data() + 0x00409428; // start of item lists
+
+    unsigned position = 0;
+
+    for (unsigned i = 0; i < 216; i++) {
+        //find size by subtracting next pointer from the current one
+
+        uint32_t size = *(uint32_t*)(ptrList+(i*4)+4);
+        size -= *(uint32_t*)(ptrList+(i*4));
+
+        ItemSpawn list(rand);
+
+        for (unsigned j = 0; j < TOTAL; j++) {
+            if (weights[j] != 0) {
+                list.addCategory(j, weights[j]);
+
+                for (unsigned k = 0; k < groupChoosables[j].size();k++) {
+                    list.addItem((groupChoosables[j][k]) + 0x10, j);
+                }
+            }
+        }
+
+        list.normalize(size);
+        list.write((uint16_t*)(valueStart + position));
+        position += size;
+    }
+}
+
+
+
+void ROM::randTypes(unsigned percent) {
+    const uint8_t maxTypeId = 0x12;
+
+    const uint8_t excludedTypes[] = {
+        0x00, //No type, so excluded
+        0x12  //Neutral type, not used for pokemon
+    };
+
+    struct PokemonType {
+        uint8_t first, second;
+    };
+
+    std::vector<uint8_t> choosables;
+    std::vector<PokemonType> pokemonTypes;
+
+    //Make choosable Types list
+    for (uint8_t i = 0; i != maxTypeId; i++)
+        if (std::find(std::begin(excludedTypes), std::end(excludedTypes), i) == std::end(excludedTypes))
+            choosables.push_back(i);
+
+    //Map types to every pokemon ID
+    for (unsigned i = 0; i != 600; i++) {
+        pokemonTypes.emplace_back();
+        PokemonType &t = pokemonTypes.back();
+        t.first = vecRand(choosables);
+
+        //Try for second Type
+        if ((rand() % 100) < percent) {
+            do {
+                t.second = vecRand(choosables);
+            } while (t.second == t.first);
+        }
+        else
+            t.second = 0;
+    }
+
+    //Assign the values to the pokemon entries
+    for (unsigned i = 0; i != 1155; i++) {
+        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+
+        //Get pokemon ID from memory
+        uint16_t ID = *(entry+4)+*(entry+5)*256;
+
+        memcpy(entry + 0x14, &pokemonTypes[ID].first, 1);
+        memcpy(entry + 0x15, &pokemonTypes[ID].second, 1);
+    }
+}
+
+void ROM::randIQs() {
+    const uint8_t maxIQId = 0xF;
+
+    const uint8_t excludedIQs[] = {
+        0x08, //Unused
+        0x09, //Unused
+        0x0C, //Unused
+        0x0D, //Unused
+        0x0E, //Unused
+        0x0F  //Invalid
+    };
+
+    std::vector<uint8_t> choosables;
+    std::vector<uint8_t> pokemonIQs;
+
+    //Make choosable IQ's list
+    for (uint8_t i = 0; i != maxIQId; i++)
+        if (std::find(std::begin(excludedIQs), std::end(excludedIQs), i) == std::end(excludedIQs))
+            choosables.push_back(i);
+
+    //Map IQ's to every pokemon ID
+    for (unsigned i = 0; i != 600; i++)
+        pokemonIQs.push_back(vecRand(choosables));
+
+    //Assign the values to the pokemon entries
+    for (unsigned i = 0; i != 1155; i++) {
+        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+
+        //Get pokemon ID from memory
+        uint16_t ID = *(entry+4)+*(entry+5)*256;
+
+        memcpy(entry + 0x17, &pokemonIQs[ID], 1);
     }
 }
 
@@ -220,194 +575,7 @@ void ROM::randAbilities(unsigned percent) {
     }
 }
 
-void ROM::randTypes(unsigned percent) {
-    const uint8_t maxTypeId = 0x12;
-    
-    const uint8_t excludedTypes[] = {
-        0x00, //No type, so excluded
-        0x12  //Neutral type, not used for pokemon
-    };
-    
-    struct PokemonType {
-        uint8_t first, second;
-    };
-    
-    std::vector<uint8_t> choosables;
-    std::vector<PokemonType> pokemonTypes;
-    
-    //Make choosable Types list
-    for (uint8_t i = 0; i != maxTypeId; i++)
-        if (std::find(std::begin(excludedTypes), std::end(excludedTypes), i) == std::end(excludedTypes))
-            choosables.push_back(i);
-    
-    //Map types to every pokemon ID
-    for (unsigned i = 0; i != 600; i++) {
-        pokemonTypes.emplace_back();
-        PokemonType &t = pokemonTypes.back();
-        t.first = vecRand(choosables);
-        
-        //Try for second Type
-        if ((rand() % 100) < percent) {
-            do {
-                t.second = vecRand(choosables);
-            } while (t.second == t.first);
-        }
-        else
-            t.second = 0;
-    }
 
-    //Assign the values to the pokemon entries
-    for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
-
-        //Get pokemon ID from memory
-        uint16_t ID = *(entry+4)+*(entry+5)*256;
-
-        memcpy(entry + 0x14, &pokemonTypes[ID].first, 1);
-        memcpy(entry + 0x15, &pokemonTypes[ID].second, 1);
-    }
-}
-
-void ROM::randIQs() {
-    const uint8_t maxIQId = 0xF;
-    
-    const uint8_t excludedIQs[] = {
-        0x08, //Unused
-        0x09, //Unused
-        0x0C, //Unused
-        0x0D, //Unused
-        0x0E, //Unused
-        0x0F  //Invalid
-    };
-    
-    std::vector<uint8_t> choosables;
-    std::vector<uint8_t> pokemonIQs;
-    
-    //Make choosable IQ's list
-    for (uint8_t i = 0; i != maxIQId; i++)
-        if (std::find(std::begin(excludedIQs), std::end(excludedIQs), i) == std::end(excludedIQs))
-            choosables.push_back(i);
-    
-    //Map IQ's to every pokemon ID
-    for (unsigned i = 0; i != 600; i++)
-        pokemonIQs.push_back(vecRand(choosables));
-    
-    //Assign the values to the pokemon entries
-    for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
-
-        //Get pokemon ID from memory
-        uint16_t ID = *(entry+4)+*(entry+5)*256;
-
-        memcpy(entry + 0x17, &pokemonIQs[ID], 1);
-    }
-}
-
-void ROM::randMusic() {
-    const uint8_t maxMusicId = 0x80;
-
-    const uint8_t excludedMusic[] = {
-        0x00, //No music
-        0x36, //No music
-        0x76, //No music
-        0x77, //No music
-        0x78, //No music
-        0x79, //No music
-        0x7A, //No music
-        0x7B, //No music
-        0x7C, //No music
-        0x7D, //No music
-        0x7E, //No music
-        0x7F  //No music
-    };
-
-    std::vector<uint8_t> choosables;
-    std::vector<uint8_t> music;
-
-    for (uint8_t i = 0; i != maxMusicId; i++)
-        if (std::find(std::begin(excludedMusic), std::end(excludedMusic), i) == std::end(excludedMusic))
-            choosables.push_back(i);
-
-    //generate list for dungeon
-    for (unsigned i = 0; i != 200; i++)
-        music.push_back(vecRand(choosables));
-
-    unsigned count = 0;
-    uint8_t last = 0x01;
-
-    //Assign the values to the floor entries
-    for (unsigned i = 0; i != 1837; i++) {
-        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
-
-        uint8_t current = *(entry + 0x3);
-
-        if (last != current) {
-            count++;
-        }
-
-        last = *(entry + 0x3);
-        memcpy(entry + 0x3, &music[count], 1);
-
-    }
-}
-
-void ROM::randTerrain() {
-    const uint8_t maxTerrainId = 0x90;
-
-    const uint8_t excludedTerrains[] = {
-        0x0D, //Invalid
-        0x15, //Invalid
-        0x29, //Invalid
-        0x2F, //Invalid
-        0x3C, //Invalid
-        0x46, //Invalid
-        0x47, //Invalid
-        0x48, //Invalid
-        0x49, //Invalid
-        0x4D, //Invalid
-        0x56, //Invalid
-        0x59, //Invalid
-        0x5C, //Invalid
-        0x5D, //Invalid
-        0x5F, //Invalid
-        0x59, //Invalid
-        0x62, //Invalid
-        0x64, //Invalid
-        0x6B, //Invalid
-        0x78, //Invalid
-        0x79, //Invalid
-        0x90, //Invalid
-    };
-
-    std::vector<uint8_t> choosables;
-    std::vector<uint8_t> terrains;
-
-    for (uint8_t i = 0; i != maxTerrainId; i++)
-        if (std::find(std::begin(excludedTerrains), std::end(excludedTerrains), i) == std::end(excludedTerrains))
-            choosables.push_back(i);
-
-    //generate list for dungeon
-    for (unsigned i = 0; i != 250; i++)
-        terrains.push_back(vecRand(choosables));
-
-    unsigned count = 0;
-    uint8_t last = 0x00;
-
-    //Assign the values to the floor entries
-    for (unsigned i = 0; i != 1837; i++) {
-        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
-
-        uint8_t current = *(entry + 0x2);
-
-       if (last != current) {
-            count++;
-       }
-
-       last = *(entry + 0x2);
-       memcpy(entry + 0x2, &terrains[count], 1);
-
-    }
-}
 
 void ROM::randMoveset() {
 
@@ -649,138 +817,7 @@ void ROM::randMoveset() {
     }
 }
 
-void ROM::randItems() {
 
-    const uint16_t maxItemId = 0x016B;
-
-    const uint16_t excludedItems[] = {
-        0x0000,  //No item
-        0x000B,  //Null item
-        0x000C,  //Null item
-        0x0062,  //Null item
-        0x0071,  //Null item
-        0x0072,  //Null item
-        0x008A,  //Null item
-        0x00A6,  //Null item
-        0x00AF,  //Null item
-        0x00B0,  //Null item
-        0x00B1,  //Null item
-        0x00B5,  //Null item
-        0x00B8,  //Null item
-        0x00B9,  //Null item
-        0x00BB,  //Used TM, not a dungeon item
-        0x00C2,  //Null item
-        0x00C6,  //Null item
-        0x00CD,  //Null item
-        0x00DB,  //Null item
-        0x00E0,  //Null item
-        0x00E2,  //Null item
-        0x00EC,  //Null item
-        0x0102,  //Null item
-        0x0103,  //Null item
-        0x0125,  //Null item
-        0x0126,  //Null item
-        0x0127,  //Null item
-        0x0128,  //Null item
-        0x0129,  //Null item
-        0x012A,  //Null item
-        0x012B,  //Null item
-        0x012C,  //Null item
-        0x0144,  //Null item
-        0x0153,  //Null item
-        0x0159,  //Null item
-        0x015D,  //Null item
-        0x0161,  //Null item
-        0x0168,  //Null item
-        0x0169,  //Null item
-        0x016B   //Null item
-    };
-    
-    enum Group {
-        THROWN_LINE,
-        THROWN_ARC,
-        BERRY_SEED,
-        FOOD,
-        HELD,
-        TM,
-        COINS,
-        OTHER = 8,
-        ORB = 9,
-        BOX = 10,
-        TOTAL
-    };
-
-    std::vector<uint16_t> choosables;
-    std::array<std::vector<uint16_t>, TOTAL> groupChoosables;
-
-    for (uint16_t i = 0; i != maxItemId; i++)
-        if (std::find(std::begin(excludedItems), std::end(excludedItems), i) == std::end(excludedItems)) {
-            choosables.push_back(i);
-
-            //Separate items into their respective groups
-
-            if ((i >= 0x0001 && i <= 0x0006) || i == 0x0009 )
-                groupChoosables[THROWN_LINE].push_back(i);
-
-            if ((i >= 0x0007 && i <= 0x0008) || i == 0x000A )
-                groupChoosables[THROWN_ARC].push_back(i);
-
-            if (i >= 0x000D && i <= 0x0044)
-                groupChoosables[HELD].push_back(i);
-
-            if ((i >= 0x0045 && i <= 0x006C) || (i >= 0x0074 && i <= 0x0076))
-                groupChoosables[BERRY_SEED].push_back(i);
-
-            if ((i >= 0x006D && i <= 0x0070) || (i >= 0x0077 && i <= 0x0089) || i == 0x0073 )
-                groupChoosables[FOOD].push_back(i);
-
-            if (i >= 0x008B && i <= 0x00BA && i != 0x00B7)
-                groupChoosables[OTHER].push_back(i);
-
-            if (i >= 0x00BC && i <= 0x0124)
-                groupChoosables[TM].push_back(i);
-
-            if (i >= 0x012D && i <= 0x0167)
-                groupChoosables[ORB].push_back(i);
-
-            if (i == 0x016A)
-                groupChoosables[BOX].push_back(i);
-
-            if (i == 0x00B7)
-                groupChoosables[COINS].push_back(i);
-        }
-
-    const int weights[TOTAL] { 7, 3, 142, 224, 56, 96, 1, 0, 41, 54, 1 }; //total 324
-
-
-    uint8_t *ptrList = memory.data() + 0x00415404; // list of pointers to every list
-    uint8_t *valueStart = memory.data() + 0x00409428; // start of item lists
-
-    unsigned position = 0;
-
-    for (unsigned i = 0; i < 216; i++) {
-        //find size by subtracting next pointer from the current one
-
-        uint32_t size = *(uint32_t*)(ptrList+(i*4)+4);
-        size -= *(uint32_t*)(ptrList+(i*4));
-
-        ItemSpawn list(rand);
-
-        for (unsigned j = 0; j < TOTAL; j++) {
-            if (weights[j] != 0) {
-                list.addCategory(j, weights[j]);
-
-                for (unsigned k = 0; k < groupChoosables[j].size();k++) {
-                    list.addItem((groupChoosables[j][k]) + 0x10, j);
-                }
-            }
-        }
-
-        list.normalize(size);
-        list.write((uint16_t*)(valueStart + position));
-        position += size;
-    }
-}
 
 void ROM::randText() {
 
