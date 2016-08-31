@@ -35,7 +35,9 @@ void Dialog::randomize() {
 
         ui->progressBar->setValue(0);
 
-        if(!rom.loadFile("rom/data/BALANCE/mappa_s.bin")) {
+
+
+        if(rom.loadFile("rom/data/BALANCE/mappa_s.bin")) {
             throw std::string("ROM: Failed to open mappa_s.bin");
         }
 
@@ -57,6 +59,12 @@ void Dialog::randomize() {
 
         rom.saveFile("rom/data/BALANCE/mappa_s.bin");
 
+
+
+        if(rom.loadFile("rom/data/BALANCE/monster.md")) {
+            throw std::string("ROM: Failed to open monster.md");
+        }
+
         if (ui->TypeEnable->isChecked())
             rom.randTypes(ui->TypePercentBox->value());
         ui->progressBar->setValue(50);
@@ -69,17 +77,31 @@ void Dialog::randomize() {
             rom.randAbilities(ui->AbilityPercentBox->value());
         ui->progressBar->setValue(70);
 
+        rom.saveFile("rom/data/BALANCE/monster.md");
 
+
+
+        if(rom.loadFile("rom/data/BALANCE/waza_p.bin")) {
+            throw std::string("ROM: Failed to open waza_p.bin");
+        }
 
         if (ui->MovesetEnable->isChecked())
             rom.randMoveset();
         ui->progressBar->setValue(80);
 
+        rom.saveFile("rom/data/BALANCE/waza_p.bin");
 
+
+
+        if(rom.loadFile("rom/data/MESSAGE/text_e.str")) {
+            throw std::string("ROM: Failed to open text_e.str");
+        }
 
         if (ui->TextEnable->isChecked())
             rom.randText();
         ui->progressBar->setValue(90);
+
+        rom.saveFile("rom/data/MESSAGE/text_e.str");
 
 
 

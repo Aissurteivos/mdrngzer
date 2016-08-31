@@ -76,7 +76,7 @@ void ROM::open(const std::string &filePath) {
 
     spawnv(P_WAIT, "ndstool.exe", my_args);
 
-    if(!loadFile("rom/header.bin")) {
+    if(loadFile("rom/header.bin")) {
         throw std::string("ROM: Failed to open header.bin");
     }
 
@@ -86,8 +86,34 @@ void ROM::open(const std::string &filePath) {
 }
 
 void ROM::save(const std::string &filePath) {
-    std::ofstream file(filePath, std::ios::binary);
-    file.write((char*)memory.data(), memory.size());
+
+    std::string romPath = "\"" + filePath + "\"";
+
+    const char *my_args[21]{
+        "ndstool.exe",
+        "-c",
+        romPath.c_str(),
+        "-9",
+        "\"rom/arm9.bin\"",
+        "-7",
+        "\"rom/arm7.bin\"",
+        "-y9",
+        "\"rom/y9.bin\"",
+        "-y7",
+        "\"rom/y7.bin\"",
+        "-d",
+        "\"rom/data\"",
+        "-y",
+        "\"rom/overlay\"",
+        "-t",
+        "\"rom/banner.bin\"",
+        "-h",
+        "\"rom/header.bin\"",
+        nullptr };
+
+    spawnv(P_WAIT, "ndstool.exe", my_args);
+
+    rmdir("rom");
 }
 
 
@@ -136,7 +162,7 @@ void ROM::randTerrain() {
 
     //Assign the values to the floor entries
     for (unsigned i = 0; i != 1837; i++) {
-        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
+        uint8_t *entry = memory.data() + 0x00008DB0 + i * 32;
 
         uint8_t current = *(entry + 0x2);
 
@@ -184,7 +210,7 @@ void ROM::randMusic() {
 
     //Assign the values to the floor entries
     for (unsigned i = 0; i != 1837; i++) {
-        uint8_t *entry = memory.data() + 0x003DC7B0 + i * 32;
+        uint8_t *entry = memory.data() + 0x00008DB0 + i * 32;
 
         uint8_t current = *(entry + 0x3);
 
@@ -412,8 +438,8 @@ void ROM::randItems() {
     const int weights[TOTAL] { 7, 3, 142, 224, 56, 96, 1, 0, 41, 54, 1 }; //total 324
 
 
-    uint8_t *ptrList = memory.data() + 0x00415404; // list of pointers to every list
-    uint8_t *valueStart = memory.data() + 0x00409428; // start of item lists
+    uint8_t *ptrList = memory.data() + 0x00041A04; // list of pointers to every list
+    uint8_t *valueStart = memory.data() + 0x00035A28; // start of item lists
 
     unsigned position = 0;
 
@@ -481,7 +507,7 @@ void ROM::randTypes(unsigned percent) {
 
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+        uint8_t *entry = memory.data() + 0x8 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
@@ -517,7 +543,7 @@ void ROM::randIQs() {
 
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+        uint8_t *entry = memory.data() + 0x8 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
@@ -565,7 +591,7 @@ void ROM::randAbilities(unsigned percent) {
 
     //Iterate through all pokemon entires and assign their abilities based on pokemon ID
     for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x00472808 + i * 68;
+        uint8_t *entry = memory.data() + 0x8 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
@@ -730,7 +756,7 @@ void ROM::randMoveset() {
                 size2Choosables.push_back(i);
         }
 
-    uint8_t *entry = memory.data() + 0x00487410;
+    uint8_t *entry = memory.data() + 0x10;
 
     for (unsigned i = 0, position = 0; i != 553; i++) {
         uint8_t *levelList = entry + position;
@@ -824,8 +850,8 @@ void ROM::randText() {
     std::vector<std::pair<std::string,unsigned>> choosables;
     std::vector<unsigned> slotLength;
 
-    uint8_t *ptrList = memory.data() + 0x02075E00;
-    uint8_t *stringList = memory.data() + 0x02087E50;
+    uint8_t *ptrList = memory.data();
+    uint8_t *stringList = memory.data() + 0x12050;
 
     //read all the strings from memory, put them into a vector, along with their length
 
