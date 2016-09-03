@@ -915,3 +915,113 @@ void ROM::randText() {
         position += slotSize;
     }
 }
+
+
+
+void ROM::randStarters() {
+
+    std::vector<uint8_t> textMemory;
+
+    std::ifstream file("rom/data/MESSAGE/text_e.str", std::ios::binary);
+
+    if(!file) {
+        throw std::string("ROM: Failed to open text_e.str");
+    }
+
+    file.seekg(0, std::ios::end);
+    textMemory.resize(file.tellg());
+    file.seekg(0, std::ios::beg);
+
+    file.read((char*)textMemory.data(), textMemory.size());
+
+    file.close();
+
+    const uint16_t maxPokemonId = 0x217;
+
+    const uint16_t excludedPokemon[] = {
+        0x0000, //No pokemon/end of list
+        0x00C9, //Unown A
+        0x00CA, //Unown B
+        0x00CB, //Unown C
+        0x00CC, //Unown D
+        0x00CD, //Unown E
+        0x00CE, //Unown F
+        0x00CF, //Unown G
+        0x00D0, //Unown H
+        0x00D1, //Unown I
+        0x00D2, //Unown J
+        0x00D3, //Unown K
+        0x00D4, //Unown L
+        0x00D5, //Unown M
+        0x00D6, //Unown N
+        0x00D7, //Unown O
+        0x00D8, //Unown P
+        0x00D9, //Unown Q
+        0x00DA, //Unown R
+        0x00DB, //Unown S
+        0x00DC, //Unown T
+        0x00DD, //Unown U
+        0x00DE, //Unown V
+        0x00DF, //Unown W
+        0x00E0, //Unown X
+        0x00E1, //Unown Y
+        0x00E2, //Unown Z
+        0x00E3, //Unown !
+        0x00E4, //Unown ?
+        0x0229  //Decoy
+    };
+
+    std::vector<uint16_t> choosables;
+
+    for (uint16_t i = 0; i != maxPokemonId; i++)
+
+        if (std::find(std::begin(excludedPokemon), std::end(excludedPokemon), i) == std::end(excludedPokemon)) {
+            choosables.push_back(i);
+        }
+
+    for (unsigned i = 0; i != 22; i++) { //partner
+
+        uint8_t *entry = memory.data() + 0x1F4C + i * 2;
+        uint16_t value = vecRandAndRemove(choosables);
+
+        if (rand() % 2 == 0) {
+            value += 0x258; // 50% female, 50% male
+        }
+
+        memcpy(entry, &value, 2);
+    }
+
+    for (unsigned i = 22, k = 0; i != 54; i++) { //Player
+
+        uint8_t *entry = memory.data() + 0x1F4C + i * 2;
+        uint16_t value = vecRandAndRemove(choosables);
+
+        std::string pkmName((char*)((textMemory.data()) + *(uint32_t*)(textMemory.data()+((value + 0x221E)*4))));
+
+        if (k % 3 == 0) {
+            k++;
+        }
+
+        std::string personalityMessage = "Will be a [CS:K]" + pkmName + "[CR]!";
+
+        uint8_t *messageLocation = textMemory.data() + *(uint32_t*)(textMemory.data()+((k + 0x67C)*4));
+
+        memcpy(messageLocation, personalityMessage.data(), personalityMessage.length() + 1);
+
+        if (i % 2 == 1) {
+            value += 0x258;
+        }
+
+        memcpy(entry, &value, 2);
+
+        k++;
+    }
+
+    std::ofstream file2("rom/data/MESSAGE/text_e.str", std::ios::binary);
+
+    file2.write((char*)textMemory.data(), textMemory.size());
+
+    file2.close();
+
+
+}

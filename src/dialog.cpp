@@ -93,19 +93,30 @@ void Dialog::randomize() {
 
 
 
+        if(rom.loadFile("rom/overlay/overlay_0013.bin")) {
+            throw std::string("ROM: Failed to open overlay_0013.bin");
+        }
+
+        if (ui->StarterEnable->isChecked())
+            rom.randStarters();
+        ui->progressBar->setValue(90);
+
+        rom.saveFile("rom/overlay/overlay_0013.bin");
+
+
         if(rom.loadFile("rom/data/MESSAGE/text_e.str")) {
             throw std::string("ROM: Failed to open text_e.str");
         }
 
         if (ui->TextEnable->isChecked())
             rom.randText();
-        ui->progressBar->setValue(90);
+        ui->progressBar->setValue(100);
 
         rom.saveFile("rom/data/MESSAGE/text_e.str");
 
 
 
-        ui->progressBar->setValue(100);
+
 
         rom.save(QFileDialog::getSaveFileName(this, "Choose a Destination", "", "Image FIles (*.nds)")
                  .toUtf8().constData());

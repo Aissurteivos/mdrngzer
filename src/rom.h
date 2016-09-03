@@ -23,6 +23,7 @@ public:
     void randMoveset();
     void randItems();
     void randText();
+    void randStarters();
     
 private:
     std::vector<uint8_t> memory;

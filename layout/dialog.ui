@@ -112,8 +112,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>446</width>
-               <height>127</height>
+               <width>443</width>
+               <height>126</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_6">
@@ -242,8 +242,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>446</width>
-               <height>127</height>
+               <width>429</width>
+               <height>137</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_5">
@@ -294,9 +294,9 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="MiscTab">
+        <widget class="QWidget" name="ExperimentalTab">
          <attribute name="title">
-          <string>Misc</string>
+          <string>Experimental</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_7">
           <item row="0" column="0">
@@ -309,15 +309,22 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>446</width>
-               <height>127</height>
+               <width>443</width>
+               <height>126</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_8">
               <item row="0" column="0">
                <widget class="QCheckBox" name="TextEnable">
                 <property name="text">
-                 <string>Randomize text [UNSTABLE][Silly]</string>
+                 <string>Randomize Text [UNSTABLE]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="StarterEnable">
+                <property name="text">
+                 <string>Randomize Starters (buggy)</string>
                 </property>
                </widget>
               </item>
@@ -441,11 +448,6 @@
           <string>Auto generate seed</string>
          </property>
         </widget>
-        <zorder>progressBar</zorder>
-        <zorder>randomizeButton</zorder>
-        <zorder>SeedBox</zorder>
-        <zorder>SeedLabel</zorder>
-        <zorder>SeedEnable</zorder>
        </widget>
       </item>
      </layout>
