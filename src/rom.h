@@ -10,9 +10,11 @@ class ROM {
 public:
     ROM(unsigned seed);
     void open(const std::string &filePath);
+    int loadFile(const std::string &filePath, std::vector<uint8_t> &memory);
+    void loadAllFiles();
     void save(const std::string &filePath);
-    int loadFile(const std::string &filePath);
-    int saveFile(const std::string &filePath);
+    int saveFile(const std::string &filePath, std::vector<uint8_t> &memory);
+    void saveAllFiles();
     
     void randPokemon();
     void randAbilities(unsigned percent);
@@ -26,7 +28,12 @@ public:
     void randStarters();
     
 private:
-    std::vector<uint8_t> memory;
+    std::vector<uint8_t> dungeonMemory;
+    std::vector<uint8_t> pokemonMemory;
+    std::vector<uint8_t> moveMemory;
+    std::vector<uint8_t> overlay13Memory;
+    std::vector<uint8_t> textMemory;
+
     std::mt19937 rand;
     
     template<typename Type>

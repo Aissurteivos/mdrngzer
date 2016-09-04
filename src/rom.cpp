@@ -13,7 +13,7 @@
 ROM::ROM(unsigned seed) : rand(seed) {
 }
 
-int ROM::loadFile(const std::string &filePath) {
+int ROM::loadFile(const std::string &filePath, std::vector<uint8_t> &memory) {
 
     std::ifstream file(filePath, std::ios::binary);
 
@@ -32,7 +32,7 @@ int ROM::loadFile(const std::string &filePath) {
     return 0;
 }
 
-int ROM::saveFile(const std::string &filePath) {
+int ROM::saveFile(const std::string &filePath, std::vector<uint8_t> &memory) {
 
     std::ofstream file(filePath, std::ios::binary);
 
@@ -41,6 +41,33 @@ int ROM::saveFile(const std::string &filePath) {
     file.close();
 
     return 0;
+}
+
+void ROM::loadAllFiles() {
+
+    if(loadFile("rom/data/BALANCE/mappa_s.bin", dungeonMemory)) {
+        throw std::string("ROM: Failed to open mappa_s.bin");
+    }
+    if(loadFile("rom/data/BALANCE/monster.md", pokemonMemory)) {
+        throw std::string("ROM: Failed to open monster.md");
+    }
+    if(loadFile("rom/data/BALANCE/waza_p.bin", moveMemory)) {
+        throw std::string("ROM: Failed to open waza_p.bin");
+    }
+    if(loadFile("rom/overlay/overlay_0013.bin", overlay13Memory)) {
+        throw std::string("ROM: Failed to open overlay_0013.bin");
+    }
+    if(loadFile("rom/data/MESSAGE/text_e.str", textMemory)) {
+        throw std::string("ROM: Failed to open text_e.str");
+    }
+}
+
+void ROM::saveAllFiles() {
+    saveFile("rom/data/BALANCE/mappa_s.bin", dungeonMemory);
+    saveFile("rom/data/BALANCE/monster.md", pokemonMemory);
+    saveFile("rom/data/BALANCE/waza_p.bin", moveMemory);
+    saveFile("rom/overlay/overlay_0013.bin", overlay13Memory);
+    saveFile("rom/data/MESSAGE/text_e.str", textMemory);
 }
 
 void ROM::open(const std::string &filePath) {
@@ -76,7 +103,9 @@ void ROM::open(const std::string &filePath) {
 
     spawnv(P_WAIT, "ndstool.exe", my_args);
 
-    if(loadFile("rom/header.bin")) {
+    std::vector<uint8_t> memory;
+
+    if(loadFile("rom/header.bin", memory)) {
         throw std::string("ROM: Failed to open header.bin");
     }
 
@@ -162,7 +191,7 @@ void ROM::randTerrain() {
 
     //Assign the values to the floor entries
     for (unsigned i = 0; i != 1837; i++) {
-        uint8_t *entry = memory.data() + 0x00008DB0 + i * 32;
+        uint8_t *entry = dungeonMemory.data() + 0x00008DB0 + i * 32;
 
         uint8_t current = *(entry + 0x2);
 
@@ -210,7 +239,7 @@ void ROM::randMusic() {
 
     //Assign the values to the floor entries
     for (unsigned i = 0; i != 1837; i++) {
-        uint8_t *entry = memory.data() + 0x00008DB0 + i * 32;
+        uint8_t *entry = dungeonMemory.data() + 0x00008DB0 + i * 32;
 
         uint8_t current = *(entry + 0x3);
 
@@ -315,7 +344,7 @@ void ROM::randPokemon() {
             choosables.push_back(i);
 
     for (unsigned i = 0; i != 14229; i++) {
-        uint8_t *entry = memory.data() + 0x000177D0 + i * 8;
+        uint8_t *entry = dungeonMemory.data() + 0x000177D0 + i * 8;
         //Check for every unchoosable pokemon type
         bool finish = false;
         for (uint16_t excludable : excludedPokemon) {
@@ -438,8 +467,8 @@ void ROM::randItems() {
     const int weights[TOTAL] { 7, 3, 142, 224, 56, 96, 1, 0, 41, 54, 1 }; //total 324
 
 
-    uint8_t *ptrList = memory.data() + 0x00041A04; // list of pointers to every list
-    uint8_t *valueStart = memory.data() + 0x00035A28; // start of item lists
+    uint8_t *ptrList = dungeonMemory.data() + 0x00041A04; // list of pointers to every list
+    uint8_t *valueStart = dungeonMemory.data() + 0x00035A28; // start of item lists
 
     unsigned position = 0;
 
@@ -466,8 +495,6 @@ void ROM::randItems() {
         position += size;
     }
 }
-
-
 
 void ROM::randTypes(unsigned percent) {
     const uint8_t maxTypeId = 0x12;
@@ -507,7 +534,7 @@ void ROM::randTypes(unsigned percent) {
 
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x8 + i * 68;
+        uint8_t *entry = pokemonMemory.data() + 0x8 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
@@ -543,7 +570,7 @@ void ROM::randIQs() {
 
     //Assign the values to the pokemon entries
     for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x8 + i * 68;
+        uint8_t *entry = pokemonMemory.data() + 0x8 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
@@ -591,7 +618,7 @@ void ROM::randAbilities(unsigned percent) {
 
     //Iterate through all pokemon entires and assign their abilities based on pokemon ID
     for (unsigned i = 0; i != 1155; i++) {
-        uint8_t *entry = memory.data() + 0x8 + i * 68;
+        uint8_t *entry = pokemonMemory.data() + 0x8 + i * 68;
 
         //Get pokemon ID from memory
         uint16_t ID = *(entry+4)+*(entry+5)*256;
@@ -600,8 +627,6 @@ void ROM::randAbilities(unsigned percent) {
         memcpy(entry + 0x19, &pokemonAbilities[ID].second, 1);
     }
 }
-
-
 
 void ROM::randMoveset() {
 
@@ -756,7 +781,7 @@ void ROM::randMoveset() {
                 size2Choosables.push_back(i);
         }
 
-    uint8_t *entry = memory.data() + 0x10;
+    uint8_t *entry = moveMemory.data() + 0x10;
 
     for (unsigned i = 0, position = 0; i != 553; i++) {
         uint8_t *levelList = entry + position;
@@ -843,15 +868,13 @@ void ROM::randMoveset() {
     }
 }
 
-
-
 void ROM::randText() {
 
     std::vector<std::pair<std::string,unsigned>> choosables;
     std::vector<unsigned> slotLength;
 
-    uint8_t *ptrList = memory.data();
-    uint8_t *stringList = memory.data() + 0x12050;
+    uint8_t *ptrList = textMemory.data();
+    uint8_t *stringList = textMemory.data() + 0x12050;
 
     //read all the strings from memory, put them into a vector, along with their length
 
@@ -916,25 +939,7 @@ void ROM::randText() {
     }
 }
 
-
-
 void ROM::randStarters() {
-
-    std::vector<uint8_t> textMemory;
-
-    std::ifstream file("rom/data/MESSAGE/text_e.str", std::ios::binary);
-
-    if(!file) {
-        throw std::string("ROM: Failed to open text_e.str");
-    }
-
-    file.seekg(0, std::ios::end);
-    textMemory.resize(file.tellg());
-    file.seekg(0, std::ios::beg);
-
-    file.read((char*)textMemory.data(), textMemory.size());
-
-    file.close();
 
     const uint16_t maxPokemonId = 0x217;
 
@@ -981,7 +986,7 @@ void ROM::randStarters() {
 
     for (unsigned i = 0; i != 22; i++) { //partner
 
-        uint8_t *entry = memory.data() + 0x1F4C + i * 2;
+        uint8_t *entry = overlay13Memory.data() + 0x1F4C + i * 2;
         uint16_t value = vecRandAndRemove(choosables);
 
         if (rand() % 2 == 0) {
@@ -993,7 +998,7 @@ void ROM::randStarters() {
 
     for (unsigned i = 22, k = 0; i != 54; i++) { //Player
 
-        uint8_t *entry = memory.data() + 0x1F4C + i * 2;
+        uint8_t *entry = overlay13Memory.data() + 0x1F4C + i * 2;
         uint16_t value = vecRandAndRemove(choosables);
 
         std::string pkmName((char*)((textMemory.data()) + *(uint32_t*)(textMemory.data()+((value + 0x221E)*4))));
@@ -1002,7 +1007,7 @@ void ROM::randStarters() {
             k++;
         }
 
-        std::string personalityMessage = "Will be a [CS:K]" + pkmName + "[CR]!";
+        std::string personalityMessage = "Will be [CS:K]" + pkmName + "[CR]!";
 
         uint8_t *messageLocation = textMemory.data() + *(uint32_t*)(textMemory.data()+((k + 0x67C)*4));
 
@@ -1016,12 +1021,6 @@ void ROM::randStarters() {
 
         k++;
     }
-
-    std::ofstream file2("rom/data/MESSAGE/text_e.str", std::ios::binary);
-
-    file2.write((char*)textMemory.data(), textMemory.size());
-
-    file2.close();
 
 
 }
